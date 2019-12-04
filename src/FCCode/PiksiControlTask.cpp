@@ -8,10 +8,10 @@ PiksiControlTask::PiksiControlTask(StateFieldRegistry &registry,
     pos_sr(0.0, (6371.0 + 600.0)*1000.0, 64*3),
     pos_f("piksi.pos", pos_sr),
     //worst case perigee orbital velocity
-    vel_sr(0, 10000.0, 64*3),
+    vel_sr(0.0, 10000.0, 64*3),
     vel_f("piksi.vel", vel_sr),
     //assuming max baseline range is 50km, baseline is in mm
-    baseline_pos_sr(0, (50.0*1000.0*1000.0), 64*3),
+    baseline_pos_sr(0.0, (50.0*1000.0*1000.0), 64*3),
     baseline_pos_f("piksi.baseline_pos", baseline_pos_sr),
     current_state_sr(0, 10, 4),
     current_state_f("piksi.state", current_state_sr),
