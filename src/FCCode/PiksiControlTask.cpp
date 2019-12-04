@@ -4,13 +4,16 @@ PiksiControlTask::PiksiControlTask(StateFieldRegistry &registry,
     unsigned int offset, Devices::Piksi &_piksi) 
     : TimedControlTask<void>(registry, offset),
     piksi(_piksi),
-    pos_sr(0, 100000, 100),
+    //assuming max alt is 6371 + 600 km
+    pos_sr(0.0, (6371.0 + 600.0)*1000.0, 64*3),
     pos_f("piksi.pos", pos_sr),
-    vel_sr(0, 100000, 100),
+    //worst case perigee orbital velocity
+    vel_sr(0, 10000.0, 64*3),
     vel_f("piksi.vel", vel_sr),
-    baseline_pos_sr(0, 100000, 100),
+    //assuming max baseline range is 50km, baseline is in mm
+    baseline_pos_sr(0, (50.0*1000.0*1000.0), 64*3),
     baseline_pos_f("piksi.baseline_pos", baseline_pos_sr),
-    current_state_sr(0, 4, 2),
+    current_state_sr(0, 10, 4),
     current_state_f("piksi.state", current_state_sr),
     time_sr(),
     time_f("piksi.time", time_sr)
