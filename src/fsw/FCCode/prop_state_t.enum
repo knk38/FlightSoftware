@@ -1,0 +1,15 @@
+#ifndef prop_state_t_enum_
+#define prop_state_t_enum_
+
+// prop.state
+enum class prop_state_t {
+    disabled,
+    idle,
+    pressurizing,
+    firing,
+    venting,
+    awaiting_pressurization,
+    handling_fault // state where we handle faults
+};
+
+#endif
