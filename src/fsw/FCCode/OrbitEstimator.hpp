@@ -19,9 +19,6 @@ class OrbitEstimator : public ControlTask<void> {
     void execute() override;
 
    protected:
-    //! Control cycle count.
-    std::shared_ptr<ReadableStateField<unsigned int>> control_cycle_count_fp;
-
     //! Position and velocity of this satellite, as read directly from the Piksi in the
     //! ECEF frame.
     std::shared_ptr<ReadableStateField<d_vector_t>> r1_vec_ecef_rd_fp;
@@ -34,10 +31,10 @@ class OrbitEstimator : public ControlTask<void> {
 
     // TODO insert other state fields we need to know in order to determine orbital state.
 
-    //! Estimated position and velocity of this satellite in the ECI frame.
+    //! Estimated position and velocity of this satellite in the ECEF frame.
     ReadableStateField<d_vector_t> r1_vec_eci_f;
     ReadableStateField<d_vector_t> v1_vec_eci_f;
-    //! Estimated position and velocity of other satellite in the ECI frame.
+    //! Estimated position and velocity of other satellite in the ECEF frame.
     ReadableStateField<d_vector_t> r2_vec_eci_f;
     ReadableStateField<d_vector_t> v2_vec_eci_f;
 };
