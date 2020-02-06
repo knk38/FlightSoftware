@@ -13,7 +13,7 @@ int main()
   size_t length = read(STDIN_FILENO, input, STREAM_SIZE);
   bitstream bs(input, length);
 
-  uint8_t u8; 
+  uint8_t u8;
   bs>>u8;
   uint16_t u16;
   bs>>u16;
@@ -23,7 +23,7 @@ int main()
   std::vector<bool> bit_arr (STREAM_SIZE, 0);
   bs>>bit_arr;
 
-  for (size_t i = 0; i < 42; ++i)
+  for (size_t i = 0; i < 69; ++i)
   {
     choose_op(bs);
   }
@@ -42,7 +42,8 @@ int choose_op(bitstream& bs)
   size_t size_bs_other = rand()%STREAM_SIZE;
   char bs_other_arr[size_bs_other];
   bitstream bs_other(bs_other_arr, size_bs_other);
-  if (rand() % 2 == 0)
+  int dir = (rand()%2 == 0) ? -1 : 1;
+ if (rand() % 7 == 0)
     bs.reset();
   switch(rand() % num_ops )
   {
@@ -57,7 +58,7 @@ int choose_op(bitstream& bs)
     case 4:
       return bs.peekN(rand(), bit_arr_1);
     case 5:
-      return bs.seekG(rand(), rand()%2);
+      return bs.seekG(rand(), dir);
     case 6:
       return bs.editN(rand()%size_new_val, new_val);
     case 7:
