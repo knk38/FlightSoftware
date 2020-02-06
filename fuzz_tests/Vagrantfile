@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 4096
+    v.cpus = 2
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install -y git cmake build-essential wget vim python screen gdb
+    git clone https://github.com/longld/peda.git ~/peda
+    echo "source ~/peda/peda.py" >> ~/.gdbinit
+    mkdir ./afl
+    # Plz don't mess up SSD
+    mount -o size=1G -t ramfs none ./afl
+    cd ./afl
+    # Git clone and make AFL
+    wget http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz
+    tar xf afl-latest.tgz
+    cd afl-* 
+    make
+    make install
+    cd ..
+    echo core > /proc/sys/kernel/core_pattern
+    # PAN STUFF
+    git clone https://github.com/pathfinder-for-autonomous-navigation/FlightSoftware.git
+
+  SHELL
+end
