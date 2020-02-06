@@ -37,7 +37,8 @@ int choose_op(bitstream& bs)
   std::vector<bool> bit_arr_1(rand()%STREAM_SIZE, 0);
   uint8_t u8 = rand();
   uint8_t u8_1 = rand();
-  uint8_t new_val [rand()%STREAM_SIZE];
+  size_t size_new_val = rand()%STREAM_SIZE;
+  uint8_t new_val [size_new_val];
   size_t size_bs_other = rand()%STREAM_SIZE;
   char bs_other_arr[size_bs_other];
   bitstream bs_other(bs_other_arr, size_bs_other);
@@ -48,19 +49,19 @@ int choose_op(bitstream& bs)
     case 0:
       return bs.has_next();
     case 1:
-      return bs.nextN(rand(), &u8);
+      return bs.nextN(rand()%8, &u8);
     case 2:
       return bs.nextN(rand(), bit_arr);
     case 3:
-      return bs.peekN(rand(), &u8_1);
+      return bs.peekN(rand()%8, &u8_1);
     case 4:
       return bs.peekN(rand(), bit_arr_1);
     case 5:
       return bs.seekG(rand(), rand()%2);
     case 6:
-      return bs.editN(rand(), new_val);
+      return bs.editN(rand()%size_new_val, new_val);
     case 7:
-      return bs.editN(rand(), bs_other);
+      return bs.editN(rand()%size_bs_other, bs_other);
     case 8:
       bs.reset();
   }
