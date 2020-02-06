@@ -3,13 +3,13 @@
 #include <vector>
 #include <unistd.h>
 #include <random>
-//AFL_HARDEN=1 afl-clang++ ../src/common/fixed_array.hpp ../src/common/bitstream.cpp test_bitstream.cpp -std=c++14
+//AFL_HARDEN=4 afl-clang++ ../src/common/fixed_array.hpp ../src/common/bitstream.cpp test_bitstream.cpp -std=c++14
 #define STREAM_SIZE 70
 int choose_op(bitstream& bs);
 int main()
 {
   srand(NULL);
-  char input[STREAM_SIZE];
+  char input[STREAM_SIZE] = {0};
   size_t length = read(STDIN_FILENO, input, STREAM_SIZE);
   bitstream bs(input, length);
 
@@ -33,13 +33,14 @@ int main()
 int choose_op(bitstream& bs)
 {
   static int num_ops = 9;
-  std::vector<bool> bit_arr(rand(), 0);
-  std::vector<bool> bit_arr_1(rand(), 0);
+  std::vector<bool> bit_arr(rand()%STREAM_SIZE, 0);
+  std::vector<bool> bit_arr_1(rand()%STREAM_SIZE, 0);
   uint8_t u8 = rand();
   uint8_t u8_1 = rand();
   uint8_t new_val [rand()%STREAM_SIZE];
-  char bs_other_arr[rand()];
-  bitstream bs_other(bs_other_arr, sizeof(bs_other_arr));
+  size_t size_bs_other = rand()%STREAM_SIZE;
+  char bs_other_arr[size_bs_other];
+  bitstream bs_other(bs_other_arr, size_bs_other);
   if (rand() % 2 == 0)
     bs.reset();
   switch(rand() % num_ops )
@@ -47,19 +48,19 @@ int choose_op(bitstream& bs)
     case 0:
       return bs.has_next();
     case 1:
-      return bs.nextN(rand()%STREAM_SIZE, &u8);
+      return bs.nextN(rand(), &u8);
     case 2:
-      return bs.nextN(rand()%STREAM_SIZE, bit_arr);
+      return bs.nextN(rand(), bit_arr);
     case 3:
-      return bs.peekN(rand()%STREAM_SIZE, &u8_1);
+      return bs.peekN(rand(), &u8_1);
     case 4:
       return bs.peekN(rand(), bit_arr_1);
     case 5:
-      return bs.seekG(rand()%STREAM_SIZE, rand()%2);
+      return bs.seekG(rand(), rand()%2);
     case 6:
-      return bs.editN(rand()%STREAM_SIZE, new_val);
+      return bs.editN(rand(), new_val);
     case 7:
-      return bs.editN(rand()%sizeof(bs_other_arr), bs_other);
+      return bs.editN(rand(), bs_other);
     case 8:
       bs.reset();
   }
