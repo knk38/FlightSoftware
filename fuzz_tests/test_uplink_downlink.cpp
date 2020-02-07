@@ -5,13 +5,12 @@
 #include <common/bitstream.h>
 #include <fsw/FCCode/UplinkCommon.h>
 #include <fsw/FCCode/UplinkConsumer.h>
-#include <gsw/UplinkProducer.h>
 #include "../test/StateFieldRegistryMock.hpp"
 #include "test_fixture.hpp"
 
 
 // TIL how to use the -I flag
-//  AFL_HARDEN=4 afl-clang++ -DPAN_LEADER -I ../src/common -I ../lib/common/libsbp/include -I../src -I ../lib/common/psim/include -I ../src/fsw/FCCode -I ../lib/common/concurrentqueue test_uplink_downlink.cpp ../src/common/StateField*.cpp ../src/common/bitstream.cpp ../src/fsw/FCCode/UplinkCo*.cpp ../src/fsw/FCCode/TimedControlTask.cpp ../src/common/debug_console.cpp -I ../lib/common/ArduinoJson/src -std=c++14 -DFUNCTIONAL_TEST -DDESKTOP
+// AFL_HARDEN=4 afl-clang++ -DPAN_LEADER -I ../src/common -I ../lib/common/libsbp/include -I../src -I ../lib/common/psim/include -I ../src/fsw/FCCode -I ../lib/common/concurrentqueue test_uplink_downlink.cpp ../src/common/StateField*.cpp ../src/common/bitstream.cpp ../src/fsw/FCCode/UplinkCo*.cpp ../src/fsw/FCCode/TimedControlTask.cpp ../src/common/debug_console.cpp -I ../lib/common/ArduinoJson/src -std=c++14 -DFUNCTIONAL_TEST -DDESKTOP
 // convert n to bits
 #define STREAM_SIZE 70
 class TestFixture {
@@ -19,8 +18,7 @@ class TestFixture {
     StateFieldRegistryMock registry;
 
     std::unique_ptr<UplinkConsumer> uplink_consumer;
-    std::unique_ptr<UplinkProducer> uplink_producer;
-    
+
     std::shared_ptr<InternalStateField<size_t>> radio_mt_packet_len_fp;
     std::shared_ptr<InternalStateField<char*>> radio_mt_packet_fp;
 
@@ -55,7 +53,7 @@ class TestFixture {
 
         // Initialize internal fields
         uplink_consumer = std::make_unique<UplinkConsumer>(registry, 0);
-        uplink_producer = std::make_unique<UplinkProducer>(registry, 0);
+        // uplink_producer = std::make_unique<UplinkProducer>(registry);
 
         radio_mt_packet_fp->set(mt_buffer);
         field_map = std::map<std::string, size_t>();
@@ -69,6 +67,7 @@ class TestFixture {
             // from_ull(w, rand()); // no seed so should be the same each time
         }
         uplink_consumer->init_uplink();
+
     }
 };
 
@@ -77,7 +76,21 @@ int main()
   srand(0);
   char input[STREAM_SIZE] = {0};
   size_t length = read(STDIN_FILENO, input, STREAM_SIZE);
+
+  // make an uplink packet from this random thing
+  char up_packet[STREAM_SIZE] = {0};
+  bitstream bs(up_packet, length);
+
   TestFixture tf;
+  size_t max_index = tf.uplink_consumer->registry.writable_fields.size();
+
+  // set mt buffer
+  tf.radio_mt_packet_fp->set(input);
+  // set mt length
+  tf.radio_mt_packet_len_fp->set(length);
+  // process mt packet
+  tf.uplink_consumer->execute();
+  // check that we got what we asked for
 
   return 0;
 }
