@@ -15,7 +15,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt-get install -y git cmake build-essential wget vim python screen gdb
+    apt-get install -y git cmake build-essential wget vim gdb clang llvm python python-pip
+    pip install platformio
     git clone https://github.com/longld/peda.git ~/peda
     echo "source ~/peda/peda.py" >> ~/.gdbinit
     mkdir ./afl
@@ -26,13 +27,17 @@ Vagrant.configure("2") do |config|
     wget http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz
     tar xf afl-latest.tgz
     cd afl-* 
+    cd llvm_mode/
     make
     make install
-    cd ..
+    cd ../../
+    ln -fs /home/vagrant/afl/afl-2.52b/afl-clang-fast++ /usr/bin/g++
+    export AFL_PATH=/home/vagrant/afl/afl-2.52b
     echo core > /proc/sys/kernel/core_pattern
     # PAN STUFF
     git clone https://github.com/pathfinder-for-autonomous-navigation/FlightSoftware.git
     cd FlightSoftware
+    git submodule update --init --recursive
     git checkout fuzz_test
     cd fuzz_tests
     make
