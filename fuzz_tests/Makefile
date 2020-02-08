@@ -1,4 +1,4 @@
-CXX = afl-g++
+CXX = /home/vagrant/afl/afl-2.52b/afl-clang-fast++
 TARGET_EXEC ?= a.out
 
 BUILD_DIR ?= ./build
