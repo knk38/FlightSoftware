@@ -40,7 +40,7 @@ void test10(char* myarr, size_t arr_size)
   // 0xdeadbeefabcdef
   bitstream bs(myarr, arr_size);
   std::vector<bool> my_ba = std::vector<bool>(arr_size*8, 0); 
-  size_t subset_size = rand()%(arr_size*8);
+  size_t subset_size = 4269%(arr_size*8);
   size_t bits_read = bs.nextN(subset_size, my_ba);
   assert(subset_size == bits_read);
   uint8_t expect;
