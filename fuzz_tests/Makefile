@@ -2,12 +2,16 @@ CXX = afl-g++
 TARGET_EXEC ?= a.out
 
 BUILD_DIR ?= ./build
-SRC_DIRS ?= ./fuzz_bitstream
 
 BITSTREAM_SRCS = ../src/common/bitstream.cpp
-UPLINK_SRCS =  ../src/common/bitstream.cpp ../../src/common/StateField*.cpp ../../src/fsw/FCCode/UplinkCo*.cpp ../../src/fsw/FCCode/TimedControlTask.cpp ../../src/common/debug_console.cpp
+UPLINK_SRCS =  ../src/common/bitstream.cpp ../src/common/StateField*.cpp ../src/fsw/FCCode/UplinkCo*.cpp ../src/fsw/FCCode/TimedControlTask.cpp ../src/common/debug_console.cpp
 
+# fuzzing bitstream
+SRC_DIRS ?= ./fuzz_bitstream
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp) $(BITSTREAM_SRCS)
+#fuzzing uplink
+# SRC_DIRS ?= ./fuzz_uplink
+# SRCS := $(shell find $(SRC_DIRS) -name *.cpp) $(UPLINK_SRCS)
 
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)

@@ -10,16 +10,20 @@ To protect SSD and CPU resources, fuzz inside Virtual machine!
   $ vagrant ssh
 4. Vagrantfile should have cloned FlightSoftware. You should be in ~/afl/FlightSoftware/fuzz_tests
 5. Run make to make the targets
-6. To start fuzzing
+  $ make
+6. Run as sudo
+  $ sudo su
+6. Create your input and output folders
+  $ mkdir -p findings test_cases
+7. Add a test case to the test_cases folder
+  $ echo "a" > ./test_cases/a
+8. To start fuzzing
   $ afl-fuzz -i test_cases -o findings -- ./build/a.out
   The directory ./in should contain test cases and ./out is the afl-fuzz output
-7. Vagrant will save the state of your virtual machine. To destroy it
+9. Vagrant will save the state of your virtual machine. To destroy it
   $ vagrant destroy
 
 Right now, only fuzz_bitstream compiles. One could try to get fuzz_uplink to compile by changing
-SRCS := $(shell find $(SRC_DIRS) -name *.cpp) $(BITSTREAM_SRCS) 
-to
-SRCS := $(shell find $(SRC_DIRS) -name *.cpp) $(UPLINK_SRCS)
 
 See the QuickStart guide on afl-fuzz 
 https://github.com/google/AFL/blob/master/docs/QuickStartGuide.txt
