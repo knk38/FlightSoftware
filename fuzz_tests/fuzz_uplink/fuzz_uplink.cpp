@@ -1,12 +1,9 @@
-#define DESKTOP
+
 #include <vector>
 #include <unistd.h>
 #include <random>
-#include <common/bitstream.h>
-#include <fsw/FCCode/UplinkCommon.h>
-#include <fsw/FCCode/UplinkConsumer.h>
-#include "../test/StateFieldRegistryMock.hpp"
-#include "test_fixture.hpp"
+#include "../../src/fsw/FCCode/UplinkConsumer.h"
+#include "../../test/StateFieldRegistryMock.hpp"
 
 
 // TIL how to use the -I flag

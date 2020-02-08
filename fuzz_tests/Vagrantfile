@@ -32,5 +32,9 @@ Vagrant.configure("2") do |config|
     echo core > /proc/sys/kernel/core_pattern
     # PAN STUFF
     git clone https://github.com/pathfinder-for-autonomous-navigation/FlightSoftware.git
+    cd FlightSoftware
+    git checkout fuzz_test
+    cd fuzz_tests
+    make
   SHELL
 end

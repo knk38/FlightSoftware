@@ -1,5 +1,5 @@
-#include "../src/common/bitstream.h"
-#include "../src/common/fixed_array.hpp"
+
+#include "../../src/common/bitstream.h"
 #include <vector>
 #include <unistd.h>
 #include <random>
