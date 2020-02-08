@@ -1,4 +1,4 @@
-CXX = afl-g++
+CXX = afl-clang++
 TARGET_EXEC ?= a.out
 
 BUILD_DIR ?= ./build

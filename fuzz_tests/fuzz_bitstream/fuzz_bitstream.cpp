@@ -6,28 +6,59 @@
 //AFL_HARDEN=4 afl-clang++ ../src/common/fixed_array.hpp ../src/common/bitstream.cpp test_bitstream.cpp -std=c++14
 #define STREAM_SIZE 70
 int choose_op(bitstream& bs);
+void test10(char* myarr, size_t arr_size);
 int main()
 {
-  srand(NULL);
+  srand(0);
   char input[STREAM_SIZE] = {0};
   size_t length = read(STDIN_FILENO, input, STREAM_SIZE);
-  bitstream bs(input, length);
+  // bitstream bs(input, length);
+  test10(input, length);
 
-  uint8_t u8;
-  bs>>u8;
-  uint16_t u16;
-  bs>>u16;
-  uint32_t u32;
-  bs>>u32;
-  bs.reset();
-  std::vector<bool> bit_arr (STREAM_SIZE, 0);
-  bs>>bit_arr;
+  // uint8_t u8;
+  // bs>>u8;
+  // uint16_t u16;
+  // bs>>u16;
+  // uint32_t u32;
+  // bs>>u32;
+  // bs.reset();
+  // std::vector<bool> bit_arr (STREAM_SIZE, 0);
+  // bs>>bit_arr;
 
-  for (size_t i = 0; i < 69; ++i)
+  // for (size_t i = 0; i < 69; ++i)
+  // {
+  //   choose_op(bs);
+  // }
+  // return 0;
+}
+
+
+void test10(char* myarr, size_t arr_size)
+{
+  // char* myarr = (char*)"\xde\xad\xbe\xef\xab\xcd\xef";
+  // '0b 1101 1110 1010 1101 1011 1110 1110 1111 1010 1011 1100 1101 1110 1111'
+  // 0xdeadbeefabcdef
+  bitstream bs(myarr, arr_size);
+  std::vector<bool> my_ba = std::vector<bool>(arr_size*8, 0); 
+  size_t subset_size = rand()%(arr_size*8);
+  size_t bits_read = bs.nextN(subset_size, my_ba);
+  assert(subset_size == bits_read);
+  uint8_t expect;
+  for (int i = 0; i < arr_size; ++i ) 
   {
-    choose_op(bs);
+    expect = 0;
+    for (int j = 0; j < 8; ++j)
+    {
+      if (i*8 + j >= subset_size) // since i only asked for subset_size, there should only be at most subset_size
+        break;
+      expect = (myarr[i] >> j) & 1;
+      assert( expect == my_ba[i*8 + j] );
+    }
   }
-  return 0;
+  for (int i = subset_size; i < 8*arr_size; ++i) // everyone else should be 0
+  {
+    assert( 0 == my_ba[i] );
+  }
 }
 
 int choose_op(bitstream& bs)
