@@ -3,6 +3,7 @@
 #include <vector>
 #include <unistd.h>
 #include <random>
+#include <assert.h>
 //AFL_HARDEN=4 afl-clang++ ../src/common/fixed_array.hpp ../src/common/bitstream.cpp test_bitstream.cpp -std=c++14
 #define STREAM_SIZE 70
 int choose_op(bitstream& bs);
