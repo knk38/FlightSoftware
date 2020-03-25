@@ -16,12 +16,10 @@ reading the most updated statefield variables.
 # Installing and Running
 
 Flask Server:
-1. Create and activate a virtualenv within this directory.
-    - For Mac and Linux: `python3 -m virtualenv venv; source venv/bin/activate`
-    - For Windows: `python -m virtualenv venv`, followed by `venv\Scripts\activate`.
-2. Install the requirements: `pip install -r requirements.txt`
-3. To run the server, type `python main.py` in the terminal
-4. To view the SwaggerUI API, type `http://127.0.0.1:5000/swagger/` in your browser
+1. Ensure you are in the venv activated from the FlightSoftware directory and have
+   installed all requirements.
+2. To run the server, type `python main.py` in the terminal
+3. To view the SwaggerUI API, type `http://127.0.0.1:5000/swagger/` in your browser
 
 ElasticSearch:
 1. Install Java and Homebrew on your computer
