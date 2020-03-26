@@ -30,7 +30,7 @@ bool ADCS::i2c_ping() {
 }
 
 template <typename T>
-void ADCS::i2c_point_and_read(unsigned char data_register, T* data, std::size_t len) {
+void ADCS::i2c_point_and_read(unsigned char data_register, T* data, std::unsigned int len) {
     set_read_ptr(data_register);
     i2c_request_from(len);
     i2c_read(data, len);

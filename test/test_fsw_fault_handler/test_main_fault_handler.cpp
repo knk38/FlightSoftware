@@ -25,7 +25,7 @@ class TestFixtureMainFH {
     std::shared_ptr<Fault> prop_overpressure_fault_fp;
 
     WritableStateField<bool>* fault_handler_enabled_fp = nullptr;
-    size_t num_fault_handler_machines = 0;
+    unsigned int num_fault_handler_machines = 0;
 
     TestFixtureMainFH() {
         // Prepare inputs for main fault handler
@@ -47,7 +47,7 @@ class TestFixtureMainFH {
         num_fault_handler_machines = fault_handler->fault_handler_machines.size();
 
         // Replace all fault handler submachines with mocks
-        for(size_t i = 0; i < num_fault_handler_machines; i++) {
+        for(unsigned int i = 0; i < num_fault_handler_machines; i++) {
             fault_handler->fault_handler_machines[i] = std::make_unique<FaultHandlerMachineMock>(registry);
         }
     }
@@ -58,7 +58,7 @@ class TestFixtureMainFH {
      * @param idx
      * @param response
      */
-    void set_fault_machine_response(size_t idx, fault_response_t response) {
+    void set_fault_machine_response(unsigned int idx, fault_response_t response) {
         static_cast<FaultHandlerMachineMock*>(
             fault_handler->fault_handler_machines[idx].get())->set(response);
     }
@@ -80,11 +80,11 @@ class TestFixtureMainFH {
      * @param responses Desired response for the underlying fault machines
      * @return fault_response_t 
      */
-    template<size_t N>
+    template<unsigned int N>
     fault_response_t step(const std::array<fault_response_t, N>& responses) 
     {
         assert(responses.size() == num_fault_handler_machines);
-        for(size_t i = 0; i < num_fault_handler_machines; i++) {
+        for(unsigned int i = 0; i < num_fault_handler_machines; i++) {
             set_fault_machine_response(i, responses[i]);
         }
 

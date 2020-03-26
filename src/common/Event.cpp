@@ -15,7 +15,7 @@ Event::Event(const std::string& name,
         field_data_size_bits += field->bitsize();
     }
     field_data.reset(new bit_array(32 + field_data_size_bits));
-    for(size_t i = 0; i < field_data->size(); i++) {
+    for(unsigned int i = 0; i < field_data->size(); i++) {
         (*field_data)[i] = 0;
     }
 }
@@ -36,13 +36,13 @@ void Event::serialize() {
     for(ReadableStateFieldBase* field : data_fields) {
         const bit_array& field_bits = field->get_bit_array();
         field->serialize();
-        for(size_t i = 0; i < field->bitsize(); i++, field_data_ptr++) {
+        for(unsigned int i = 0; i < field->bitsize(); i++, field_data_ptr++) {
             (*field_data)[field_data_ptr] = field_bits[i];
         }
     }
 }
 
-size_t Event::bitsize() const {
+unsigned int Event::bitsize() const {
     return field_data->size();
 }
 

@@ -91,7 +91,7 @@ void test6()
   uint8_t res[64];
   uint32_t actual [7] = {0xde, 0xad, 0xbe, 0xef, 0xab, 0xcd, 0xef};
   bitstream bs(myarr, 7);
-  size_t bits_read = bs.nextN(64, res);
+  unsigned int bits_read = bs.nextN(64, res);
   TEST_ASSERT_EQUAL(56, bits_read); // there are only 56 bits
   for (int i = 0; i < 7; ++i)
   {
@@ -113,7 +113,7 @@ void test7()
   char arr [ (bit_arr.size() + 7)/8 ];
   bitstream bs(bit_arr, arr); 
   uint8_t res[4];
-  size_t bits_read = bs.nextN(32, res);
+  unsigned int bits_read = bs.nextN(32, res);
   TEST_ASSERT_EQUAL(32, bits_read);
   uint8_t expect[4] = {0xef, 0xbe, 0xad, 0xde};
   for (int i = 0; i < 4; ++i)
@@ -138,7 +138,7 @@ void test8()
   char arr [ (bit_arr.size() + 7)/8 ];
   bitstream bs(bit_arr, arr); 
   uint8_t res[4];
-  size_t bits_read = bs.nextN(18, res);
+  unsigned int bits_read = bs.nextN(18, res);
   TEST_ASSERT_EQUAL(18, bits_read);
   uint8_t expect[4] = {0xef, 0xbe, 0x1};
   for (int i = 0; i < 3; ++i)
@@ -173,7 +173,7 @@ void test10()
   // 0xdeadbeefabcdef
   bitstream bs(myarr, 7);
   std::vector<bool> my_ba = std::vector<bool>(56, 0); 
-  size_t bits_read = bs.nextN(42, my_ba);
+  unsigned int bits_read = bs.nextN(42, my_ba);
   TEST_ASSERT_EQUAL(42, bits_read);
   uint8_t expect;
   for (int i = 0; i < 6; ++i ) 
@@ -400,7 +400,7 @@ void test16()
   TEST_ASSERT_EQUAL(3, bs.byte_offset);
   TEST_ASSERT_EQUAL(1, bs.bit_offset);
   memset(res0, 0, 2);
-  size_t amt = bs.peekN(8, res0);
+  unsigned int amt = bs.peekN(8, res0);
   TEST_ASSERT_EQUAL(7, amt);
   TEST_ASSERT_EQUAL(0x3c, *reinterpret_cast<uint16_t*>(res0));
   // attempt to write 8 bits
@@ -430,7 +430,7 @@ void test17()
   bitstream bs_dst(mydata2, 2);
 
   // Test write fewer than 8 bits 
-  size_t num_written = bs_dst.editN(5, bs_src);
+  unsigned int num_written = bs_dst.editN(5, bs_src);
   TEST_ASSERT_EQUAL(num_written, 5);
   bs_dst.seekG(num_written, bs_beg);
   uint8_t u8 = 0;

@@ -43,7 +43,7 @@ class UplinkProducer : public Uplink{
     /**
      * Return the maximum possible packet size
      */
-    const size_t get_max_possible_packet_size();
+    const unsigned int get_max_possible_packet_size();
 #ifndef DEBUG
   private:
 #endif
@@ -53,13 +53,13 @@ class UplinkProducer : public Uplink{
      * @throw runtime_error if invalid index is specified
      * @return the number of bits written
      */ 
-    size_t add_entry(bitstream& bs, char* val, size_t index);
+    unsigned int add_entry(bitstream& bs, char* val, unsigned int index);
 
     MainControlLoop fcp;
 
     // maps field names to indices
-    std::map<std::string, size_t> field_map;
+    std::map<std::string, unsigned int> field_map;
 
-    size_t max_possible_packet_size;
+    unsigned int max_possible_packet_size;
 
 };

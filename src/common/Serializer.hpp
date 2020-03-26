@@ -36,7 +36,7 @@ class SerializerBase : public SerializerType {
      /**
       * @brief Length of string returned by print().
       */
-     size_t strlength;
+     unsigned int strlength;
    protected:
     /**
      * @brief Minima and maxima used for fixed-point compression of objects.
@@ -67,7 +67,7 @@ class SerializerBase : public SerializerType {
      * serializer for a vector serializer), return from the constructor and do not resize the
      * serialized bit array.
      */
-    SerializerBase(T min, T max, size_t compressed_size, size_t _strlength) :
+    SerializerBase(T min, T max, unsigned int compressed_size, unsigned int _strlength) :
         strlength(_strlength),
         _min(min),
         _max(max),
@@ -188,9 +188,9 @@ class SerializerBase : public SerializerType {
     /**
      * @brief Return size of bit array held by this serializer.
      *
-     * @return size_t Size of bit array.
+     * @return unsigned int Size of bit array.
      */
-    size_t bitsize() const { return serialized_val.size(); }
+    unsigned int bitsize() const { return serialized_val.size(); }
 
     /**
      * @brief Set the internally stored serialized value. Do nothing if the source bit array does

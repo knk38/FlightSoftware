@@ -17,7 +17,7 @@ void setup() {
     cnt = 0;
 }
 
-template <class T, std::size_t N>
+template <class T, std::unsigned int N>
 bool comp_float_arr(std::array<T,N> a,std::array<T,N> b,float margin){
     bool ret = true;
     for(unsigned int i = 0;i<N;i++){

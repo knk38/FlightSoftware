@@ -31,7 +31,7 @@ public:
 
   // The event storage uses the event it currently points to
   // to provide the same interface as a single event.
-  size_t bitsize() const override;
+  unsigned int bitsize() const override;
   const bit_array &get_bit_array() const override;
 
   #if defined(GSW) || defined(UNIT_TEST)
@@ -54,7 +54,7 @@ public:
      * @brief The sub-event towards which the event storage is currently pointing.
      * 
      */
-  size_t event_ptr = 0;
+  unsigned int event_ptr = 0;
 };
 
 #endif

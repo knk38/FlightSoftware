@@ -36,7 +36,7 @@ class TestFixture {
           std::string key = e.key();
 
           // Get the field's index in writable_fields
-          size_t field_index = uplink_producer->field_map[key];
+          unsigned int field_index = uplink_producer->field_map[key];
           // std::cout << "Checking " << key << " at index " << field_index << std::endl;
           auto ef = registry.writable_fields[field_index]->get_bit_array().to_ulong();
           TEST_ASSERT_EQUAL(e.value(), ef);
@@ -51,7 +51,7 @@ void test_task_initialization() {
 // Test that we can create files from json
 void test_create_from_json() {
     TestFixture tf;
-    size_t arr_size = tf.uplink_producer->get_max_possible_packet_size();
+    unsigned int arr_size = tf.uplink_producer->get_max_possible_packet_size();
     char tmp [arr_size];
     bitstream bs(tmp, arr_size);
     TEST_ASSERT_NO_THROW(tf.uplink_producer->create_from_json(bs, "test/test_gsw_uplink_producer/test_1.json"));
@@ -63,7 +63,7 @@ void test_create_from_json() {
 void test_to_file()
 {
     TestFixture tf;
-    size_t arr_size = tf.uplink_producer->get_max_possible_packet_size();
+    unsigned int arr_size = tf.uplink_producer->get_max_possible_packet_size();
     char tmp [arr_size];
     bitstream bs(tmp, arr_size);
     TEST_ASSERT_NO_THROW(tf.uplink_producer->create_from_json(bs, "test/test_gsw_uplink_producer/test_1.json"));
@@ -76,7 +76,7 @@ void test_to_file()
 void test_to_file_invalid()
 {
     TestFixture tf;
-    size_t arr_size = tf.uplink_producer->get_max_possible_packet_size();
+    unsigned int arr_size = tf.uplink_producer->get_max_possible_packet_size();
     char tmp [arr_size];
     bitstream bs(tmp, arr_size);
     const std::string& filename = std::string("test/test_gsw_uplink_producer/test_invalid.sbd");
@@ -96,7 +96,7 @@ void test_create_sbd_from_json()
 void test_invalid_values()
 {
     TestFixture tf;
-    size_t arr_size = tf.uplink_producer->get_max_possible_packet_size();
+    unsigned int arr_size = tf.uplink_producer->get_max_possible_packet_size();
     char tmp [arr_size];
     bitstream bs(tmp, arr_size);
     TEST_ASSERT_THROW(tf.uplink_producer->create_from_json(bs, "test/test_gsw_uplink_producer/test_3.json"));

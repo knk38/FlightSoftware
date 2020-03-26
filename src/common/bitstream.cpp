@@ -14,8 +14,8 @@ bitstream::bitstream(const std::vector<bool>& bit_array, char* res) :
   bit_offset(0),
   byte_offset(0)
 {
-  size_t stream_size = (bit_array.size() + 7)/8;
-  for (size_t i = 0; i < stream_size; ++i)
+  unsigned int stream_size = (bit_array.size() + 7)/8;
+  for (unsigned int i = 0; i < stream_size; ++i)
   {
     res[i] = 0;
     for (int j = 0; j < 8; ++j)
@@ -32,7 +32,7 @@ bool bitstream::has_next()
   return byte_offset < max_len;
 }
 
-size_t bitstream::next(size_t num_bits, uint8_t* u8)
+unsigned int bitstream::next(unsigned int num_bits, uint8_t* u8)
 {
   if (num_bits > 8) return 0;
   uint8_t bits_read = 0;
@@ -40,7 +40,7 @@ size_t bitstream::next(size_t num_bits, uint8_t* u8)
   val >>= bit_offset;
   
   // Read until the next byte starts
-  size_t amt = 8 - bit_offset;
+  unsigned int amt = 8 - bit_offset;
   for (; bits_read < amt && bits_read < num_bits; val >>= 1, ++bits_read)
     *u8 = bit_array::modify_bit(*u8, bits_read, val&1);
 
@@ -49,24 +49,24 @@ size_t bitstream::next(size_t num_bits, uint8_t* u8)
   {
     val = *reinterpret_cast<uint8_t*>(stream + byte_offset + 1);
     // Read to the beginning of the next byte
-    for (size_t i = 0; i < bit_offset && bits_read < num_bits; ++i, val >>= 1, ++bits_read)
+    for (unsigned int i = 0; i < bit_offset && bits_read < num_bits; ++i, val >>= 1, ++bits_read)
       *u8 = bit_array::modify_bit(*u8, bits_read, val&1);
   }
   seekG(bits_read, bs_end);
   return bits_read;
 }
 
-size_t bitstream::nextN(size_t num_bits, uint8_t* res)
+unsigned int bitstream::nextN(unsigned int num_bits, uint8_t* res)
 {
   memset(res, 0, (num_bits + 7)/8);
-  size_t bits_written = 0;
+  unsigned int bits_written = 0;
 
-  size_t num_iters = num_bits/8;
-  for (size_t i = 0; i < num_iters && has_next(); ++i)
+  unsigned int num_iters = num_bits/8;
+  for (unsigned int i = 0; i < num_iters && has_next(); ++i)
   {
     bits_written  += next(8, res + i);
   }
-  size_t modulo = num_bits%8;
+  unsigned int modulo = num_bits%8;
   if (modulo != 0 && has_next())
   {
     bits_written += next(modulo, res + num_iters);
@@ -74,13 +74,13 @@ size_t bitstream::nextN(size_t num_bits, uint8_t* res)
   return bits_written;
 }
 
-size_t bitstream::nextN(size_t num_bits, std::vector<bool>& bit_arr)
+unsigned int bitstream::nextN(unsigned int num_bits, std::vector<bool>& bit_arr)
 {
-  size_t arr_size = bit_arr.size();
+  unsigned int arr_size = bit_arr.size();
   if (arr_size < num_bits)
     return 0;
-  for (size_t i = 0; i < arr_size; ++i) bit_arr[i] = 0;
-  size_t bits_written = 0;
+  for (unsigned int i = 0; i < arr_size; ++i) bit_arr[i] = 0;
+  unsigned int bits_written = 0;
   uint8_t u8 = 0;
   for (; bits_written < num_bits && has_next(); ++bits_written)
   {
@@ -96,25 +96,25 @@ size_t bitstream::nextN(size_t num_bits, std::vector<bool>& bit_arr)
   return bits_written;
 }
 
-size_t bitstream::peekN(size_t num_bits, uint8_t* res)
+unsigned int bitstream::peekN(unsigned int num_bits, uint8_t* res)
 {
-  size_t bits_peeked = 0;
+  unsigned int bits_peeked = 0;
 
   bits_peeked = nextN(num_bits, res);
   seekG(bits_peeked, bs_beg);
   return bits_peeked;
 }
 
-size_t bitstream::peekN(size_t num_bits, std::vector<bool>& bit_arr)
+unsigned int bitstream::peekN(unsigned int num_bits, std::vector<bool>& bit_arr)
 {
-  size_t bits_peeked = 0;
+  unsigned int bits_peeked = 0;
 
   bits_peeked = nextN(num_bits, bit_arr);
   seekG(bits_peeked, bs_beg);
   return bits_peeked;
 }
 
-size_t bitstream::seekG(size_t amt, int dir)
+unsigned int bitstream::seekG(unsigned int amt, int dir)
 {
   if (dir != -1 && dir != 1)
     return 0;
@@ -127,8 +127,8 @@ size_t bitstream::seekG(size_t amt, int dir)
     return 0;
 
   // calculate new offset from the current offset
-  size_t new_byte_off = desired_off/8;
-  size_t new_bit_off = desired_off%8;
+  unsigned int new_byte_off = desired_off/8;
+  unsigned int new_bit_off = desired_off%8;
 
   byte_offset = new_byte_off;
   bit_offset = new_bit_off;
@@ -136,14 +136,14 @@ size_t bitstream::seekG(size_t amt, int dir)
   return amt;
 }
 
-size_t bitstream::edit(size_t num_bits, uint8_t* val)
+unsigned int bitstream::edit(unsigned int num_bits, uint8_t* val)
 {
   uint8_t old = *reinterpret_cast<uint8_t*>(stream + byte_offset);
   uint8_t u8 = *val;
   uint8_t bits_written = 0;
   // Write until the next byte starts
-  size_t amt = 8 - bit_offset;
-  for (size_t i = 0; i < amt && bits_written < num_bits; ++i, u8 >>= 1, ++bits_written)
+  unsigned int amt = 8 - bit_offset;
+  for (unsigned int i = 0; i < amt && bits_written < num_bits; ++i, u8 >>= 1, ++bits_written)
     old = bit_array::modify_bit(old, bit_offset + i, u8&1);
   
   // Write the lower bits
@@ -154,7 +154,7 @@ size_t bitstream::edit(size_t num_bits, uint8_t* val)
   {
     old = *reinterpret_cast<uint8_t*>(stream + byte_offset + 1);
     // Write to the beginning of the next byte
-    for (size_t i = 0; i < bit_offset && bits_written < num_bits; ++i, u8 >>= 1, ++bits_written)
+    for (unsigned int i = 0; i < bit_offset && bits_written < num_bits; ++i, u8 >>= 1, ++bits_written)
     {
       old = bit_array::modify_bit(old, i, u8&1);
     }
@@ -165,14 +165,14 @@ size_t bitstream::edit(size_t num_bits, uint8_t* val)
   return bits_written;
 }
 
-size_t bitstream::editN(size_t num_bits, uint8_t* new_val)
+unsigned int bitstream::editN(unsigned int num_bits, uint8_t* new_val)
 {
-  size_t num_iters = num_bits/8;
+  unsigned int num_iters = num_bits/8;
   if (num_iters > byte_offset + max_len)
     num_iters = max_len - byte_offset;
-  size_t modulo = num_bits%8;
-  size_t bits_written = 0;
-  for (size_t i = 0; i < num_iters; ++i)
+  unsigned int modulo = num_bits%8;
+  unsigned int bits_written = 0;
+  for (unsigned int i = 0; i < num_iters; ++i)
   {
     bits_written += edit(8, new_val + i);
   }
@@ -183,13 +183,13 @@ size_t bitstream::editN(size_t num_bits, uint8_t* new_val)
   return bits_written;
 }
 
-size_t bitstream::editN(size_t num_bits, bitstream& bs_other)
+unsigned int bitstream::editN(unsigned int num_bits, bitstream& bs_other)
 {
-  size_t arr_size = (num_bits + 7)/8;
+  unsigned int arr_size = (num_bits + 7)/8;
   uint8_t tmp[arr_size];
   memset(tmp, 0, arr_size);
 
-  size_t bits_written = 0;
+  unsigned int bits_written = 0;
 
   // Attempt to read [num_bits] from bs_other
   bits_written = bs_other.nextN(num_bits, tmp);
@@ -256,7 +256,7 @@ bitstream& operator <<(std::vector<bool>& ba, bitstream& bs)
 
 bitstream& operator <<(bitstream& bs_other, bitstream& bs)
 {
-  size_t num_bits = (bs_other.max_len - bs_other.byte_offset)*8 - bs_other.bit_offset;
+  unsigned int num_bits = (bs_other.max_len - bs_other.byte_offset)*8 - bs_other.bit_offset;
   bs.editN(num_bits, bs_other);
   return bs;
 }

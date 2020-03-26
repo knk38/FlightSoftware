@@ -38,13 +38,13 @@ class TestFixture {
     StateFieldRegistryMock registry;
     // Input state fields to quake manager
     std::shared_ptr<InternalStateField<char*>> radio_mo_packet_fp;
-    std::shared_ptr<InternalStateField<size_t>> snapshot_size_fp;
+    std::shared_ptr<InternalStateField<unsigned int>> snapshot_size_fp;
 
     // Output state fields from quake manager
     WritableStateField<unsigned int>* max_wait_cycles_fp;
     WritableStateField<unsigned int>* max_transceive_cycles_fp;
     InternalStateField<char*>* radio_mt_packet_fp;
-    InternalStateField<size_t>* radio_mt_len_fp;
+    InternalStateField<unsigned int>* radio_mt_len_fp;
     ReadableStateField<int>* radio_err_fp;
     InternalStateField<unsigned char>* radio_state_fp;
     InternalStateField<unsigned int>* last_checkin_cycle_fp;
@@ -55,7 +55,7 @@ class TestFixture {
     // Create a TestFixture instance of QuakeManager with the following parameters
     TestFixture(unsigned int radio_state, int qct_state) : registry() {
         // Create external field dependencies
-        snapshot_size_fp = registry.create_internal_field<size_t>("downlink.snap_size");
+        snapshot_size_fp = registry.create_internal_field<unsigned int>("downlink.snap_size");
         radio_mo_packet_fp = registry.create_internal_field<char*>("downlink.ptr");
         // Initialize external fields
         snapshot_size_fp->set(static_cast<int>(350));
@@ -67,7 +67,7 @@ class TestFixture {
         max_wait_cycles_fp = registry.find_writable_field_t<unsigned int>("radio.max_wait");
         max_transceive_cycles_fp = registry.find_writable_field_t<unsigned int>("radio.max_transceive");
         radio_mt_packet_fp = registry.find_internal_field_t<char*>("uplink.ptr");
-        radio_mt_len_fp = registry.find_internal_field_t<size_t>("uplink.len");
+        radio_mt_len_fp = registry.find_internal_field_t<unsigned int>("uplink.len");
         radio_err_fp = registry.find_readable_field_t<int>("radio.err");
         radio_state_fp = registry.find_internal_field_t<unsigned char>("radio.state");
         last_checkin_cycle_fp = registry.find_internal_field_t<unsigned int>("radio.last_comms_ccno");
@@ -378,9 +378,9 @@ char* snap2 = (char*)
           "4444444444444444444444444444444444444444444444444444444444444444444444"\
           "5555555555555555555555555555555555555555555555555555555555555555555555";
 
-void check_buf_bytes(const char *buf1, const char *buf2, size_t size)
+void check_buf_bytes(const char *buf1, const char *buf2, unsigned int size)
 {
-  for (size_t i = 0; i < size; i++)
+  for (unsigned int i = 0; i < size; i++)
   {
     if (buf1[i] != buf2[i])
     {

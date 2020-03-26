@@ -5,16 +5,16 @@ using namespace Devices;
 // Make sure all pins low
 void check_all_valves_closed()
 {
-    for (size_t i = 0; i < 2; ++i)
+    for (unsigned int i = 0; i < 2; ++i)
         TEST_ASSERT_EQUAL(LOW, Tank1.is_valve_open(i));
-    for (size_t i = 0; i < 4; ++i)
+    for (unsigned int i = 0; i < 4; ++i)
         TEST_ASSERT_EQUAL(LOW, Tank2.is_valve_open(i));
 }
 
 // Make sure that the current schedule matches the provided schedule
 void check_tank2_schedule(const std::array<unsigned int, 4> &expected_schedule)
 {
-    for (size_t i = 0; i < 4; ++i)
+    for (unsigned int i = 0; i < 4; ++i)
         TEST_ASSERT_EQUAL(expected_schedule[i], Tank2.get_schedule_at(i));
 }
 

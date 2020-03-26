@@ -24,7 +24,7 @@ void digitalWrite(uint8_t pin, uint8_t val){}
 
 /* Constructors */
 
-Tank::Tank(size_t _num_valves) :
+Tank::Tank(unsigned int _num_valves) :
 num_valves(_num_valves) {}
 
 _Tank1::_Tank1() : Tank(2) {
@@ -63,7 +63,7 @@ bool _PropulsionSystem::setup() {
 void Tank::setup()
 {
 #ifndef DESKTOP
-    for (size_t i = 0; i < num_valves; ++i)
+    for (unsigned int i = 0; i < num_valves; ++i)
         pinMode(valve_pins[i], OUTPUT);
 
     pinMode(temp_sensor_pin, INPUT);
@@ -87,7 +87,7 @@ int Tank::get_temp() const
     return analogRead(temp_sensor_pin);
 }
 
-bool Tank::is_valve_open(size_t valve_idx) const
+bool Tank::is_valve_open(unsigned int valve_idx) const
 {
     if (valve_idx >= num_valves)
         return false;
@@ -100,7 +100,7 @@ bool Tank::is_valve_open(size_t valve_idx) const
 
 void Tank::close_all_valves()
 {
-    for (size_t i = 0; i < num_valves; ++i)
+    for (unsigned int i = 0; i < num_valves; ++i)
     {
         digitalWrite(valve_pins[i], LOW);
         is_valve_opened[i] = 0;
@@ -129,7 +129,7 @@ float _Tank2::get_pressure() const {
     return pressure;
 }
 
-unsigned int _Tank2::get_schedule_at(size_t valve_num) const
+unsigned int _Tank2::get_schedule_at(unsigned int valve_num) const
 {
     if (valve_num >= num_valves)
         return 0;
@@ -201,13 +201,13 @@ bool _PropulsionSystem::clear_schedule()
 {
     if (is_interval_enabled)
         return false;
-    for (size_t i = 0; i < 4; ++i)
+    for (unsigned int i = 0; i < 4; ++i)
         Tank2.schedule[i] = 0;
     return true;
 }
 
 
-bool _PropulsionSystem::open_valve(Tank& tank, size_t valve_idx)
+bool _PropulsionSystem::open_valve(Tank& tank, unsigned int valve_idx)
 {
     if (valve_idx >= tank.num_valves ) 
         return false;
@@ -220,7 +220,7 @@ bool _PropulsionSystem::open_valve(Tank& tank, size_t valve_idx)
     return true;
 }
 
-void _PropulsionSystem::close_valve(Tank& tank, size_t valve_idx)
+void _PropulsionSystem::close_valve(Tank& tank, unsigned int valve_idx)
 {
     if (valve_idx >= tank.num_valves)
         return;
@@ -236,7 +236,7 @@ void _PropulsionSystem::thrust_valve_loop() {
     noInterrupts(); 
     bool did_open_valve = 0;
     // Serial.printf("\nCurrent Time: %u\n",micros());
-    for (size_t i = 0; i < Tank2.num_valves; ++i) {
+    for (unsigned int i = 0; i < Tank2.num_valves; ++i) {
         // If a valve is scheduled to open for less than 3 ms, then ignore it
         if (Tank2.schedule[i] < Tank2.thrust_valve_loop_interval_ms) {
             if (Tank2.is_valve_opened[i] || Tank2.schedule[i])

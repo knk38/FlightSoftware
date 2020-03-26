@@ -1,7 +1,7 @@
 #include <fsw/FCCode/PropController.hpp>
 
 #ifdef DESKTOP
-size_t g_fake_pressure_cycle_count = 15; // global
+unsigned int g_fake_pressure_cycle_count = 15; // global
 #endif
 #if (defined(UNIT_TEST) && defined(DESKTOP))
 #define DD(f_, ...) printf((f_), ##__VA_ARGS__)
@@ -174,7 +174,7 @@ bool CountdownTimer::is_timer_zero() const
     return cycles_left == 0;
 }
 
-void CountdownTimer::set_timer_cc(size_t num_control_cycles)
+void CountdownTimer::set_timer_cc(unsigned int num_control_cycles)
 {
     cycles_left = num_control_cycles;
 }
@@ -412,7 +412,7 @@ prop_state_t PropState_Firing::evaluate() {
 
 bool PropState_Firing::is_schedule_empty() const {
     unsigned int remain = 0;
-    for (size_t i = 0; i < 4; ++i)
+    for (unsigned int i = 0; i < 4; ++i)
         remain += Tank2.get_schedule_at(i);
     return remain == 0;
 }

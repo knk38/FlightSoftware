@@ -51,7 +51,7 @@ bool Gomspace::get_hk() {
     i2c_write(command, 2);
     i2c_end_transmission(I2C_NOSTOP);
 
-    size_t struct_size = sizeof(eps_hk_t);
+    unsigned int struct_size = sizeof(eps_hk_t);
     #ifndef DESKTOP
     unsigned char buffer[struct_size + 2];
     #endif
@@ -95,7 +95,7 @@ bool Gomspace::get_hk_vi() {
     i2c_write(command, 2);
     i2c_end_transmission(I2C_NOSTOP);
 
-    size_t struct_size = sizeof(eps_hk_vi_t);
+    unsigned int struct_size = sizeof(eps_hk_vi_t);
     #ifndef DESKTOP
     unsigned char buffer[struct_size + 2];
     #endif
@@ -127,7 +127,7 @@ bool Gomspace::get_hk_out() {
     i2c_write(command, 2);
     i2c_end_transmission(I2C_NOSTOP);
 
-    size_t struct_size = sizeof(eps_hk_out_t);
+    unsigned int struct_size = sizeof(eps_hk_out_t);
     #ifndef DESKTOP
     unsigned char buffer[struct_size + 2];
     #endif
@@ -158,7 +158,7 @@ bool Gomspace::get_hk_wdt() {
     i2c_write(command, 2);
     i2c_end_transmission(I2C_NOSTOP);
 
-    size_t struct_size = sizeof(eps_hk_wdt_t);
+    unsigned int struct_size = sizeof(eps_hk_wdt_t);
     #ifndef DESKTOP
     unsigned char buffer[struct_size + 2] = {0};
     #endif
@@ -189,7 +189,7 @@ bool Gomspace::get_hk_basic() {
     i2c_write(command, 2);
     i2c_end_transmission(I2C_NOSTOP);
 
-    size_t struct_size = sizeof(eps_hk_basic_t);
+    unsigned int struct_size = sizeof(eps_hk_basic_t);
     #ifndef DESKTOP
     unsigned char buffer[struct_size + 2];
     #endif
@@ -395,7 +395,7 @@ bool Gomspace::config_get() {
     i2c_write(command, 1);
     i2c_end_transmission(I2C_NOSTOP);
 
-    size_t struct_size = sizeof(eps_config_t);
+    unsigned int struct_size = sizeof(eps_config_t);
     #ifndef DESKTOP
     unsigned char buffer[struct_size + 2];
     #endif
@@ -476,7 +476,7 @@ bool Gomspace::config2_get() {
     i2c_write(command, 1);
     i2c_end_transmission(I2C_NOSTOP);
 
-    size_t struct_size = sizeof(eps_config2_t);
+    unsigned int struct_size = sizeof(eps_config2_t);
     #ifndef DESKTOP
     unsigned char buffer[struct_size + 2];
     #endif

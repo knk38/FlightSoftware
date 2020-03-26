@@ -2,7 +2,7 @@
 
 using namespace Devices;
 
-void QuakeControlTask::set_downlink_msg(const char *_szMsg, size_t _len)
+void QuakeControlTask::set_downlink_msg(const char *_szMsg, unsigned int _len)
 {
   MO_msg_p = _szMsg;
   MO_msg_len = _len;
@@ -13,7 +13,7 @@ int QuakeControlTask::get_current_state() const
   return currentState;
 }
 
-size_t QuakeControlTask::get_current_fn_number() const
+unsigned int QuakeControlTask::get_current_fn_number() const
 {
   return fnSeqNum;
 }

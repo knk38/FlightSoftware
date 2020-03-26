@@ -14,7 +14,7 @@ struct TestFixtureEvent {
     std::vector<ReadableStateFieldBase*> event_data;
     ReadableStateField<unsigned int> *control_cycle_count_ptr;
     Event event;
-    size_t *event_ptr = nullptr;
+    unsigned int *event_ptr = nullptr;
 
     static char print_data[40];
     static const char* print_fn(const unsigned int ccno, std::vector<ReadableStateFieldBase*>& data) {
@@ -51,8 +51,8 @@ void test_single_event(TestFixtureEvent &tf, EventBase &event, unsigned int ccno
     tf.data2_f.set(false);
     
     //save pointer before signaling
-    size_t event_ptr_prev;
-    size_t event_ptr_curr;
+    unsigned int event_ptr_prev;
+    unsigned int event_ptr_curr;
 
     // Verify that upon serialization, the values are written into the event's bitset in the way
     // that we would expect

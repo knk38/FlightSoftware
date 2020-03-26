@@ -132,7 +132,7 @@ public:
     bool is_timer_zero() const;
 
     // Sets the timer (does not check whether the timer is free)
-    void set_timer_cc(size_t num_control_cycles);
+    void set_timer_cc(unsigned int num_control_cycles);
 
     void reset_timer();
 
@@ -140,7 +140,7 @@ public:
 
 private:
     // Number of cycles until this timer is free
-    size_t cycles_left = 0;
+    unsigned int cycles_left = 0;
 };
 
 // ------------------------------------------------------------------------

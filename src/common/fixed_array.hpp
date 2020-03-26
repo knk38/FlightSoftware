@@ -36,7 +36,7 @@ class fixed_array_base : public std::vector<T> {
      *
      * @param size (Unchanged) size of the object.
      */
-    explicit fixed_array_base(const size_t size) : std::vector<T>(size) {}
+    explicit fixed_array_base(const unsigned int size) : std::vector<T>(size) {}
 
     /**
      * @brief Explicit copy constructor for a fixed array. Constructs the fixed array to be of the
@@ -70,7 +70,7 @@ class fixed_array_base : public std::vector<T> {
      */
     fixed_array_base& operator=(const fixed_array_base<T>& arr) {
         if (arr.size() != this->size()) return *this;
-        for (size_t i = 0; i < arr.size(); i++) (*this)[i] = arr[i];
+        for (unsigned int i = 0; i < arr.size(); i++) (*this)[i] = arr[i];
         return *this;
     }
 
@@ -84,7 +84,7 @@ class fixed_array_base : public std::vector<T> {
      */
     fixed_array_base& operator=(const std::vector<T>& arr) {
         if (arr.size() != this->size()) return *this;
-        for (size_t i = 0; i < arr.size(); i++) (*this)[i] = arr[i];
+        for (unsigned int i = 0; i < arr.size(); i++) (*this)[i] = arr[i];
         return *this;
     }
 
@@ -116,7 +116,7 @@ class fixed_array : public fixed_array_base<T> {
      * Same constructors as fixed_array_base.
      */
     explicit fixed_array() : fixed_array_base<T>() {}
-    explicit fixed_array(const size_t size) : fixed_array_base<T>(size) {}
+    explicit fixed_array(const unsigned int size) : fixed_array_base<T>(size) {}
     fixed_array(const fixed_array<T>& arr) : fixed_array_base<T>(arr) {}
     fixed_array(const std::vector<T>& arr) : fixed_array_base<T>(arr) {}
 };
@@ -131,7 +131,7 @@ class fixed_array<bool> : public fixed_array_base<bool> {
      * Same constructors as fixed_array_base, but made public.
      */
     fixed_array() : fixed_array_base<bool>() {}
-    explicit fixed_array(const size_t size) : fixed_array_base<bool>(size) {}
+    explicit fixed_array(const unsigned int size) : fixed_array_base<bool>(size) {}
     fixed_array(const fixed_array<bool>& arr) : fixed_array_base<bool>(arr) {}
     fixed_array(const std::vector<bool>& arr) : fixed_array_base<bool>(arr) {}
 
@@ -142,7 +142,7 @@ class fixed_array<bool> : public fixed_array_base<bool> {
      * @tparam sz
      * @param set
      */
-    template <size_t sz>
+    template <unsigned int sz>
     explicit fixed_array(const std::bitset<sz>& set) : fixed_array_base<bool>(sz) {
         *this = set;
     }
@@ -155,10 +155,10 @@ class fixed_array<bool> : public fixed_array_base<bool> {
      * @param set
      * @return fixed_array&
      */
-    template <size_t sz>
+    template <unsigned int sz>
     fixed_array& operator=(const std::bitset<sz>& set) {
         if (sz != size()) return *this;
-        for (size_t i = 0; i < sz; i++) (*this)[i] = set[i];
+        for (unsigned int i = 0; i < sz; i++) (*this)[i] = set[i];
         return *this;
     }
 
@@ -170,8 +170,8 @@ class fixed_array<bool> : public fixed_array_base<bool> {
      * @return Whether or not it was possible to store the integer into this bitset.
      */
     bool set_int(unsigned int val) {
-        size_t val_num_bits = 32;
-        for (size_t i = 0; i < 32; i++) {
+        unsigned int val_num_bits = 32;
+        for (unsigned int i = 0; i < 32; i++) {
             if (pow(2, i) > val) {
                 val_num_bits = i;
                 break;
@@ -179,7 +179,7 @@ class fixed_array<bool> : public fixed_array_base<bool> {
         }
         if (val_num_bits > size()) return false;
 
-        for (size_t i = 0; i < size(); i++) {
+        for (unsigned int i = 0; i < size(); i++) {
             (*this)[i] = 0;
         }
 
@@ -216,7 +216,7 @@ class fixed_array<bool> : public fixed_array_base<bool> {
         unsigned long long val = 0;
 
         unsigned long long exp = 1;
-        for (size_t i = 0; i < size(); i++) {
+        for (unsigned int i = 0; i < size(); i++) {
             val += (*this)[i] * exp;
             exp *= 2;
         }
@@ -242,13 +242,13 @@ class fixed_array<bool> : public fixed_array_base<bool> {
      *              bit array.
      * @param end   Parameter specifying where to end in the bit array.
      */
-    void to_string(char*& str, size_t offset, size_t start, size_t end) const {
-        for(size_t i = start; i < end; i++, offset++) {
+    void to_string(char*& str, unsigned int offset, unsigned int start, unsigned int end) const {
+        for(unsigned int i = start; i < end; i++, offset++) {
             char& c = str[(offset / 8)];
             c = modify_bit(c, 7 - (offset % 8), (*this)[i]);
         }
     }
-    void to_string(char*& str, size_t offset) const {
+    void to_string(char*& str, unsigned int offset) const {
         to_string(str, offset, 0, size());
     }
 };

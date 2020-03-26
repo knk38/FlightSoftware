@@ -71,9 +71,9 @@ void AttitudeComputer::execute() {
                     {-sqrtf(2)/2, sqrtf(2)/2, 0},
                     {-sqrtf(2)/2, -sqrtf(2)/2, 0},
                 };
-                size_t long_edge_choice = 0;
+                unsigned int long_edge_choice = 0;
                 float max_projection = -2; // Projection ranges from -1 to 1
-                for(size_t i = 0; i < 4; i++) {
+                for(unsigned int i = 0; i < 4; i++) {
                     lin::Vector3f long_edge = {
                         long_edges_arrs[i][0],
                         long_edges_arrs[i][1],

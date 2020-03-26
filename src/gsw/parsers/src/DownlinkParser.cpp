@@ -48,7 +48,7 @@ std::string DownlinkParser::process_downlink_packet(const std::vector<char>& pac
 
         // Step 1: Manage the downlink frame at a bit level.
         std::vector<bool> frame_bits(frame_to_process.size() * 8);
-        for(size_t i = 0; i < frame_to_process.size(); i++) {
+        for(unsigned int i = 0; i < frame_to_process.size(); i++) {
             std::bitset<8> x(frame_to_process[i]);
             for(int j = 0; j < 8; j++) {
                 frame_bits[i*8 + j] = x[7 - j];

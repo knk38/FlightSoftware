@@ -164,7 +164,7 @@ void debug_console::_print_error_state_field(const char* field_name,
 }
 
 void debug_console::process_commands(const StateFieldRegistry& registry) {
-    TRACKED_CONSTANT_C(size_t, SERIAL_BUF_SIZE, 512);
+    TRACKED_CONSTANT_C(unsigned int, SERIAL_BUF_SIZE, 512);
     char buf[SERIAL_BUF_SIZE] = {0};
 
 #ifdef DESKTOP
@@ -173,19 +173,19 @@ void debug_console::process_commands(const StateFieldRegistry& registry) {
     if (!found_input) return;
     input.copy(buf, sizeof(buf));
 #else
-    for (size_t i = 0; i < SERIAL_BUF_SIZE && Serial.available(); i++) {
+    for (unsigned int i = 0; i < SERIAL_BUF_SIZE && Serial.available(); i++) {
         buf[i] = Serial.read();
     }
 #endif
 
-    TRACKED_CONSTANT_C(size_t, MAX_NUM_JSON_MSGS, 5);
+    TRACKED_CONSTANT_C(unsigned int, MAX_NUM_JSON_MSGS, 5);
 
     // Get all chunks of the buffer that are complete JSON messages. Read at
     // most five messages from the buffer. (It's unlikely that more than 5 messages
     // can fit within a 512 byte buffer)
-    size_t json_msg_starts[MAX_NUM_JSON_MSGS] = {0};
-    size_t num_json_msgs_found = 0;
-    for (size_t i = 0; i < SERIAL_BUF_SIZE && num_json_msgs_found < MAX_NUM_JSON_MSGS; i++) {
+    unsigned int json_msg_starts[MAX_NUM_JSON_MSGS] = {0};
+    unsigned int num_json_msgs_found = 0;
+    for (unsigned int i = 0; i < SERIAL_BUF_SIZE && num_json_msgs_found < MAX_NUM_JSON_MSGS; i++) {
         if (buf[i] == '{') {
             json_msg_starts[num_json_msgs_found] = i;
             num_json_msgs_found++;
@@ -195,7 +195,7 @@ void debug_console::process_commands(const StateFieldRegistry& registry) {
     // Deserialize all found JSON messages and check their validity
     std::array<StaticJsonDocument<100>, MAX_NUM_JSON_MSGS> msgs;
     std::array<bool, MAX_NUM_JSON_MSGS> msg_ok;
-    for (size_t i = 0; i < num_json_msgs_found; i++) {
+    for (unsigned int i = 0; i < num_json_msgs_found; i++) {
         auto result = deserializeJson(msgs[i], &buf[json_msg_starts[i]]);
         if (result == DeserializationError::Ok) {
             msg_ok[i] = true;
@@ -204,7 +204,7 @@ void debug_console::process_commands(const StateFieldRegistry& registry) {
 
     // For all valid messages, modify or print the relevant item in the state
     // field registry
-    for (size_t i = 0; i < num_json_msgs_found; i++) {
+    for (unsigned int i = 0; i < num_json_msgs_found; i++) {
         if (!msg_ok[i]) continue;
         JsonVariant msg_mode = msgs[i]["mode"];
         JsonVariant field = msgs[i]["field"];

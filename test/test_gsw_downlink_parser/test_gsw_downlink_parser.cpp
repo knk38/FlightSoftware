@@ -33,7 +33,7 @@ class TestFixture {
 
     // Parsing outputs
     InternalStateField<char*>* snapshot_fp;
-    InternalStateField<size_t>* snapshot_size_bytes_fp;
+    InternalStateField<unsigned int>* snapshot_size_bytes_fp;
 
     TestFixture() : reg(),
         data1_f("data1", Serializer<bool>()),
@@ -57,7 +57,7 @@ class TestFixture {
         cycle_count_fp->set(40);
 
         snapshot_fp = reg.find_internal_field_t<char*>("downlink.ptr");
-        snapshot_size_bytes_fp = reg.find_internal_field_t<size_t>("downlink.snap_size");
+        snapshot_size_bytes_fp = reg.find_internal_field_t<unsigned int>("downlink.snap_size");
         assert(snapshot_fp);
         assert(snapshot_size_bytes_fp);
     }

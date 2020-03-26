@@ -91,7 +91,7 @@ class TestFixture {
      * @param idx 
      * @return unsigned int 
      */
-    unsigned int read(size_t idx) {
+    unsigned int read(unsigned int idx) {
         #ifdef DESKTOP
             const std::string& field_name = eeprom_controller->pointers[idx]->name();
             if (EEPROMController::data.find(field_name) != EEPROMController::data.end()) {
@@ -108,7 +108,7 @@ class TestFixture {
     /**
      * @brief Gets pointer to statefield at index idx. 
      */
-    ReadableStateField<unsigned int>* get_ptr(size_t idx) {
+    ReadableStateField<unsigned int>* get_ptr(unsigned int idx) {
         return eeprom_controller->pointers.at(idx);
     }
 };

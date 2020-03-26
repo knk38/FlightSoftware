@@ -54,7 +54,7 @@ class ADCS : public I2CDevice {
      * @param len The number of bytes to read
      */
     template <typename T>
-    void i2c_point_and_read(unsigned char data_register, T* data, std::size_t len);
+    void i2c_point_and_read(unsigned char data_register, T* data, std::unsigned int len);
 
     /**
      * @brief Set the mode of the ADCS controller

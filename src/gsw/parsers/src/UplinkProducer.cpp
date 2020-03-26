@@ -14,7 +14,7 @@ UplinkProducer::UplinkProducer(StateFieldRegistry& r):
     // initialize index_size
     init_uplink();
     // Setup field_map
-    for (size_t i = 0; i < registry.writable_fields.size(); ++i)
+    for (unsigned int i = 0; i < registry.writable_fields.size(); ++i)
     {
         auto w = registry.writable_fields[i];
         field_map[w->name().c_str()] = i;
@@ -45,7 +45,7 @@ void UplinkProducer::create_from_json(bitstream& bs, const std::string& filename
                 throw std::runtime_error("field map key not found: " + key);
 
             // Get the field's index in writable_fields
-            size_t field_index = field_map[key];
+            unsigned int field_index = field_map[key];
 
             // Make sure the value we want to set does not exceed the max possible
             // value that the field can be set to
@@ -63,10 +63,10 @@ void UplinkProducer::create_from_json(bitstream& bs, const std::string& filename
     bs.reset();
  }
 
-size_t UplinkProducer::add_entry( bitstream& bs, char* val, size_t index)
+unsigned int UplinkProducer::add_entry( bitstream& bs, char* val, unsigned int index)
 {
-    size_t bits_written = 0;
-    size_t field_size = get_field_length(index);
+    unsigned int bits_written = 0;
+    unsigned int field_size = get_field_length(index);
 
     // Check the field size
     if (field_size == 0)
@@ -84,9 +84,9 @@ size_t UplinkProducer::add_entry( bitstream& bs, char* val, size_t index)
 
 void UplinkProducer::print_packet(bitstream& bs)
 {
-    size_t packet_size = bs.max_len*8;
+    unsigned int packet_size = bs.max_len*8;
     std::vector<bool> bit_ar (packet_size, 0);
-    size_t field_index = 0, field_len = 0, bits_consumed = 0;
+    unsigned int field_index = 0, field_len = 0, bits_consumed = 0;
     std::cout << "idx" << "\twidth" << "\tvalue" << std::endl;
     while (bits_consumed < packet_size)
     {
@@ -121,7 +121,7 @@ void UplinkProducer::to_file(const bitstream& bs, const std::string& filename)
     new_file.close();
 }
 
-const size_t UplinkProducer::get_max_possible_packet_size()
+const unsigned int UplinkProducer::get_max_possible_packet_size()
 {
     return max_possible_packet_size;
 }
@@ -130,7 +130,7 @@ const size_t UplinkProducer::get_max_possible_packet_size()
  {
     try
     {
-        size_t arr_size = get_max_possible_packet_size();
+        unsigned int arr_size = get_max_possible_packet_size();
         char tmp [arr_size];
         bitstream bs(tmp, arr_size);
         create_from_json(bs, json_file);

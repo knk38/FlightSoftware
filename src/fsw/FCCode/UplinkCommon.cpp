@@ -15,12 +15,12 @@ bool Uplink::_validate_packet(bitstream& bs)
 {
     // Start validation at beginning of bs
     bs.reset();
-    size_t packet_bytes = bs.max_len;
-    size_t field_index = 0, field_len = 0, bits_checked = 0, bits_consumed = 0;
+    unsigned int packet_bytes = bs.max_len;
+    unsigned int field_index = 0, field_len = 0, bits_checked = 0, bits_consumed = 0;
     // Keep a bit map to prevent updating the same field twice
     static std::vector<bool> is_field_updated(registry.writable_fields.size(), 0);
     // Clear the bit map
-    for (size_t i = 0; i < registry.writable_fields.size(); ++i)
+    for (unsigned int i = 0; i < registry.writable_fields.size(); ++i)
         is_field_updated[i] = 0;
     while (bits_checked < 8*packet_bytes)
     {
@@ -62,8 +62,8 @@ bool Uplink::_validate_packet(bitstream& bs)
 
 void Uplink::_update_fields(bitstream& bs)
 {
-    size_t packet_size = bs.max_len*8;
-    size_t field_index = 0, field_len = 0, bits_consumed = 0;
+    unsigned int packet_size = bs.max_len*8;
+    unsigned int field_index = 0, field_len = 0, bits_consumed = 0;
     // Start updates at beginning of bs
     bs.reset();
     while (bits_consumed < packet_size)
@@ -81,7 +81,7 @@ void Uplink::_update_fields(bitstream& bs)
         std::vector<bool>& field_bit_arr = const_cast<std::vector<bool>&>(_bit_arr);
         
         // Clear field's bit array
-        for (size_t i = 0; i < field_len; ++i)
+        for (unsigned int i = 0; i < field_len; ++i)
           field_bit_arr[i] = 0;
 
         // Dump into bit_array
@@ -91,7 +91,7 @@ void Uplink::_update_fields(bitstream& bs)
     }
 }
 
-size_t Uplink::get_field_length(size_t field_index)
+unsigned int Uplink::get_field_length(unsigned int field_index)
 {
     if (field_index >= registry.writable_fields.size())
         return 0;

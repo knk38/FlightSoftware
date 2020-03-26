@@ -113,9 +113,9 @@ class I2CDevice : public Device {
      *         call. **/
     template <typename T>
     #ifndef DESKTOP
-    void i2c_transmit_data(T const *data, std::size_t len, i2c_stop s = I2C_STOP);
+    void i2c_transmit_data(T const *data, std::unsigned int len, i2c_stop s = I2C_STOP);
     #else
-    void i2c_transmit_data(T const *data, std::size_t len, i2c_stop s = I2C_STOP);
+    void i2c_transmit_data(T const *data, std::unsigned int len, i2c_stop s = I2C_STOP);
     #endif
     /** @brief Requests and recieves a message over i2c form this device. The
      *         message will be placed in the array data of type T with length len.
@@ -123,7 +123,7 @@ class I2CDevice : public Device {
      *         requested. Any error will be recorded in the recent error history
      *         variable. This is a blocking call. **/
     template <typename T>
-    void i2c_receive_data(T *data, std::size_t len, i2c_stop s = I2C_STOP);
+    void i2c_receive_data(T *data, std::unsigned int len, i2c_stop s = I2C_STOP);
     /** @brief See Wire.beginTransmission in i2c_t3. **/
     inline void i2c_begin_transmission();
     /** @brief See Wire.endTransmission in i2c_t3. Any error will be recorded in
@@ -133,17 +133,17 @@ class I2CDevice : public Device {
     inline void i2c_send_transmission(i2c_stop s = I2C_STOP);
     /** @brief See Wire.requestFrom in i2c_t3. Any error will be recorded in the
      *         recent error history variable. **/
-    inline void i2c_request_from(std::size_t len, i2c_stop s = I2C_STOP);
+    inline void i2c_request_from(std::unsigned int len, i2c_stop s = I2C_STOP);
     /** @brief Request from a sublocation on a device. Will not generate a stop
      * condition at the end of the request. See i2c_request_from.
      *  @param subaddr Subaddress to read from I2C device.
      *  @param len Number of bytes to request. **/
-    inline void i2c_request_from_subaddr(unsigned char subaddr, std::size_t len);
+    inline void i2c_request_from_subaddr(unsigned char subaddr, std::unsigned int len);
     /** @brief Read multiple bytes from a sublocation on a device.
      *  @param subaddr Subaddress to read from I2C device.
      *  @param dest Location to place the data.
      *  @param len Number of bytes to read from I2C device. **/
-    inline void i2c_read_from_subaddr(unsigned char subaddr, unsigned char *dest, std::size_t len);
+    inline void i2c_read_from_subaddr(unsigned char subaddr, unsigned char *dest, std::unsigned int len);
     /** @brief Read one byte from a sublocation on a device.
      *  @param subaddr Subaddress to read from I2C device. **/
     inline unsigned char i2c_read_from_subaddr(unsigned char subaddr);
@@ -152,14 +152,14 @@ class I2CDevice : public Device {
      *  @param data Data to be written to be device.
      *  @param len Number of bytes to write to I2C device. **/
     inline void i2c_write_to_subaddr(unsigned char subaddr, const unsigned char data[],
-                                     std::size_t len);
+                                     std::unsigned int len);
     /** @brief Write one byte to subaddress on I2C device.
      *  @param subaddr Subaddress to read from I2C device.
      *  @param data Byte to be written to device. **/
     inline void i2c_write_to_subaddr(unsigned char subaddr, const unsigned char data);
     /** @brief See Wire.sendRequest in i2c_t3. Any error will be recorded in the
      *         recent error history variable. **/
-    inline void i2c_send_request(std::size_t len, i2c_stop s = I2C_STOP);
+    inline void i2c_send_request(std::unsigned int len, i2c_stop s = I2C_STOP);
     /** @brief See Wire.done in i2c_t3.
      *  @returns false if a non-blockign call is still running and true otherwise.
      * **/
@@ -173,7 +173,7 @@ class I2CDevice : public Device {
      *         data pointer points to the head of an array of type T with length
      *         len. **/
     template <typename T>
-    inline void i2c_write(T const *data, std::size_t len);
+    inline void i2c_write(T const *data, std::unsigned int len);
     /** @brief See Wire.available in i2c_t3. **/
     inline uint32_t i2c_available() const;
     /** @brief See Wire.readByte in i2c_t3. Any error will be recorded in the
@@ -186,7 +186,7 @@ class I2CDevice : public Device {
      * @param data The data array that the data should be read into.
      * @param len The length of the provided data array. **/
     template <typename T>
-    inline void i2c_read(T *data, std::size_t len);
+    inline void i2c_read(T *data, std::unsigned int len);
     /** @brief See Wire.peekByte in i2c_t3.
      *  @returns next unsigned char in the incoming i2c buffer. **/
     inline unsigned char i2c_peek();

@@ -54,11 +54,11 @@ public:
   int get_current_state() const;
 
   /** Returns the current function number (for testing purposes) */
-  size_t get_current_fn_number() const;
+  unsigned int get_current_fn_number() const;
 
   /**
    * Set the message that Quake should downlink.  */
-  void set_downlink_msg(const char *, size_t);
+  void set_downlink_msg(const char *, unsigned int);
 
   char* const get_MT_msg()
   {
@@ -102,7 +102,7 @@ public:
     return MO_msg_p;
   }
 
-  size_t& dbg_get_MO_len()
+  unsigned int& dbg_get_MO_len()
   {
     return MO_msg_len;
   }
@@ -124,5 +124,5 @@ private:
   int fnSeqNum;     // the sequence we are on
 
   const char *MO_msg_p;   // the message to downlink
-  size_t MO_msg_len;      // length of the message to downlink
+  unsigned int MO_msg_len;      // length of the message to downlink
 };

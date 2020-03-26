@@ -89,7 +89,7 @@ class UplinkConsumer : public TimedControlTask<void>, public Uplink {
    * to its mt buffer.
    * UplinkProducer is responsible for checking this field and reseting it to 0. 
    */
-   InternalStateField<size_t>* radio_mt_packet_len_fp;
+   InternalStateField<unsigned int>* radio_mt_packet_len_fp;
 
   /**
     * @brief Pointer to the uplink buffer in QuakeManager

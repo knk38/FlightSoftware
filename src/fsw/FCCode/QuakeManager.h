@@ -59,7 +59,7 @@ class QuakeManager : public TimedControlTask<bool> {
    /**
      * @brief Snapshot size in bytes, provided by DownlinkProducer. 
      */
-    const InternalStateField<size_t>* snapshot_size_fp;
+    const InternalStateField<unsigned int>* snapshot_size_fp;
     
   /**
    * @brief Pointer to downlink packet, provided by DownlinkProducer.
@@ -86,7 +86,7 @@ class QuakeManager : public TimedControlTask<bool> {
    /**
     * @brief Uplink length.
     **/ 
-   InternalStateField<size_t> radio_mt_len_f; 
+   InternalStateField<unsigned int> radio_mt_len_f; 
 
    /**
     * @brief Current radio state (see radio_state_t.enum).
@@ -109,7 +109,7 @@ class QuakeManager : public TimedControlTask<bool> {
   {
     return qct;
   }
-  size_t& dbg_get_max_snap()
+  unsigned int& dbg_get_max_snap()
   {
     return max_snapshot_size;
   }
@@ -124,7 +124,7 @@ class QuakeManager : public TimedControlTask<bool> {
     return mo_buffer_copy;
   }
 
-  size_t& dbg_get_mo_idx()
+  unsigned int& dbg_get_mo_idx()
   {
     return mo_idx;
   }
@@ -159,7 +159,7 @@ class QuakeManager : public TimedControlTask<bool> {
      * printf a notice about the transition 
      * Return true if there are no more control cycles, false otherwise
      */
-    bool no_more_cycles(size_t max_cycles, radio_state_t new_state);
+    bool no_more_cycles(unsigned int max_cycles, radio_state_t new_state);
 
     /**
      * Transition the radio into the new state
@@ -172,7 +172,7 @@ class QuakeManager : public TimedControlTask<bool> {
     /**
      * Local copy of max_snapshot_size given by DownlinkProducer
      */
-    size_t max_snapshot_size;
+    unsigned int max_snapshot_size;
 
     /**
      * Temporary buffer of size max_snapshot_size + 1
@@ -185,7 +185,7 @@ class QuakeManager : public TimedControlTask<bool> {
      * SBDWB will send the next 70 bytes that start at mo_idx*max_packet_size
      * from the beginning of mo_buffer_copy
      */
-    size_t mo_idx;
+    unsigned int mo_idx;
 
     /**
      * True if QM encountered an unexpected response from execute()
@@ -206,5 +206,5 @@ class QuakeManager : public TimedControlTask<bool> {
     TRACKED_CONSTANT_SC(unsigned int, max_write_cycles, 5);
     TRACKED_CONSTANT_SC(unsigned int, max_read_cycles, 5);
 
-    TRACKED_CONSTANT_SC(size_t, packet_size, 70);
+    TRACKED_CONSTANT_SC(unsigned int, packet_size, 70);
 };

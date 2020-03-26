@@ -2,7 +2,7 @@
 
 #include <fsw/FCCode/PropController.hpp>
 #include "../StateFieldRegistryMock.hpp"
-extern size_t g_fake_pressure_cycle_count;
+extern unsigned int g_fake_pressure_cycle_count;
 
 class PropTestFixture {
 public:
@@ -39,14 +39,14 @@ public:
     }
 
     // Step forward the state machine by num control cycle.
-    inline void step(size_t num=1)
+    inline void step(unsigned int num=1)
     {
-      for (size_t i = 0; i < num; ++i)
+      for (unsigned int i = 0; i < num; ++i)
         prop_controller->execute();
 
       if (PropulsionSystem.is_firing())
       {
-        for (size_t i = 0; i < 4; ++i)
+        for (unsigned int i = 0; i < 4; ++i)
         {
           // decrement each schedule as if we were thrust valve loop
           if (Tank2.schedule[i] > PAN::control_cycle_time_ms)
@@ -76,8 +76,8 @@ public:
 
     // Keep stepping until the state changes (or until we have step max_cycles steps)
     // Return the number of steps taken or return 6969696969 if there has been no state change after max_cycles steps
-    inline size_t execute_until_state_change(size_t max_cycles=2*2048) {
-        size_t num_steps = 0;
+    inline unsigned int execute_until_state_change(unsigned int max_cycles=2*2048) {
+        unsigned int num_steps = 0;
         unsigned int current_state = prop_state_fp->get();
         while (current_state == prop_state_fp->get() && num_steps < max_cycles) {
             ++num_steps;
@@ -108,7 +108,7 @@ void test_disable()
   // Firing time is set 5 control cycles from now but we should not fire since
   // state is still disabled
   tf.check_state(prop_state_t::disabled);
-  for (size_t i = 0; i < tf.prop_controller->min_cycles_needed() ; ++i)
+  for (unsigned int i = 0; i < tf.prop_controller->min_cycles_needed() ; ++i)
   {
     tf.step();
     tf.check_state(prop_state_t::disabled);
@@ -301,7 +301,7 @@ void test_firing_to_idle()
     // Test that PropulsionSystem is firing while we are in the firing state
     // 800 is the biggest value
     unsigned int cycles_firing = (800 / PAN::control_cycle_time_ms) + 1; // round up
-    for (size_t i = 0; i < cycles_firing; ++i) {
+    for (unsigned int i = 0; i < cycles_firing; ++i) {
         tf.check_state(prop_state_t::firing);
         TEST_ASSERT_TRUE(PropulsionSystem.is_firing())
         tf.step();

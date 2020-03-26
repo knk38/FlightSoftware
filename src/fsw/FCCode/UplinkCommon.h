@@ -21,7 +21,7 @@ class Uplink {
    * @brief Gets the size of the field indexed by field_index in registry.writable_fields
    * @return returns the length of the field if field_index is valid and 0 for invalid
    */
-  size_t get_field_length(size_t field_index);
+  unsigned int get_field_length(unsigned int field_index);
   
   /**
    * @brief Reference to registry so that we can update and read fields
@@ -31,7 +31,7 @@ class Uplink {
   /**
    * @brief The number of bits to represent an index
    */
-  size_t index_size;
+  unsigned int index_size;
 
 #ifndef DEBUG
   protected:

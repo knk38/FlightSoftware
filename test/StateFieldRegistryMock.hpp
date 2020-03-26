@@ -149,7 +149,7 @@ class StateFieldRegistryMock : public StateFieldRegistry {
      */
     template<typename T>
     std::shared_ptr<ReadableStateField<T>> create_readable_field(const std::string& name, 
-        T min, T max, size_t bitsize)
+        T min, T max, unsigned int bitsize)
     {
         static_assert(std::is_same<T, signed int>::value ||
             std::is_same<T, unsigned int>::value ||
@@ -179,7 +179,7 @@ class StateFieldRegistryMock : public StateFieldRegistry {
      */
     template<typename T>
     std::shared_ptr<WritableStateField<T>> create_writable_field(const std::string& name, 
-        T min, T max, size_t bitsize)
+        T min, T max, unsigned int bitsize)
     {
         static_assert(std::is_same<T, signed int>::value ||
             std::is_same<T, unsigned int>::value ||
@@ -271,7 +271,7 @@ class StateFieldRegistryMock : public StateFieldRegistry {
      */
     template<typename T>
     std::shared_ptr<ReadableStateField<std::array<T,3>>> create_readable_vector_field(const std::string& name,
-        T min, T max, size_t bitsize)
+        T min, T max, unsigned int bitsize)
     {
         static_assert(std::is_same<T, float>::value ||
                       std::is_same<T, double>::value,
@@ -297,7 +297,7 @@ class StateFieldRegistryMock : public StateFieldRegistry {
      */
     template<typename T>
     std::shared_ptr<WritableStateField<std::array<T, 3>>> create_writable_vector_field(const std::string& name,
-        T min, T max, size_t bitsize)
+        T min, T max, unsigned int bitsize)
     {
         static_assert(std::is_same<T, float>::value ||
                       std::is_same<T, double>::value,
@@ -332,7 +332,7 @@ class StateFieldRegistryMock : public StateFieldRegistry {
      * @param name Name of fault to create.
      * @return Pointer to fault that was created.
      */
-    std::shared_ptr<Fault> create_fault(const std::string& name, const size_t _persistence, const unsigned int& control_cycle_count)
+    std::shared_ptr<Fault> create_fault(const std::string& name, const unsigned int _persistence, const unsigned int& control_cycle_count)
     {
         auto fault_ptr = std::make_shared<Fault>(name, _persistence, control_cycle_count);
         add_fault(fault_ptr.get());

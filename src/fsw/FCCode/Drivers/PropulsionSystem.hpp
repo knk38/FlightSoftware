@@ -148,12 +148,12 @@ public:
     /**
      * @brief opens the valve specified by valve_idx in the specified tank
      * */
-    static bool open_valve( Tank& tank, size_t valve_idx);
+    static bool open_valve( Tank& tank, unsigned int valve_idx);
 
     /**
      * @brief closes the valve specified by valve_idx in the specified tank
      */
-    static void close_valve( Tank& tank, size_t valve_idx);
+    static void close_valve( Tank& tank, unsigned int valve_idx);
 
     inline static bool is_firing()
     {
@@ -182,7 +182,7 @@ public:
  */
 class Tank {
 public:
-    Tank(size_t num_pins);
+    Tank(unsigned int num_pins);
 
     /**
      * @brief (Analog) reads the temperature sensor for this tank and 
@@ -196,7 +196,7 @@ public:
      * (Digital) reads the pin for the specified valve and returns true
      * if that pin is HIGH
      */
-    bool is_valve_open(size_t valve_idx) const;
+    bool is_valve_open(unsigned int valve_idx) const;
 
 protected:
     /**
@@ -209,7 +209,7 @@ protected:
      */
     void close_all_valves();
 
-    size_t num_valves;
+    unsigned int num_valves;
     // pin number of the temperature sensor
     uint8_t temp_sensor_pin;
     // mapping of physical GPIO pin #s (values) to logical pin #s
@@ -256,7 +256,7 @@ public:
     /**
      * @brief Returns the current value of the schedule for the specified valve
      */
-    unsigned int get_schedule_at(size_t valve_num) const;
+    unsigned int get_schedule_at(unsigned int valve_num) const;
 
 #ifndef DESKTOP
 private:

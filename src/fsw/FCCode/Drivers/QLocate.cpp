@@ -98,7 +98,7 @@ int QLocate::query_sbdwb_2(char const *c, int len)
 
     // Write binary data to QLocate
 #ifndef DESKTOP
-    if ( (size_t)len != port->write(c, len) )
+    if ( (unsigned int)len != port->write(c, len) )
         return WRITE_FAIL;
     short s = checksum(c, len);
     if ( port->write((char)(s >> 8)) != 1 )
@@ -191,13 +191,13 @@ int QLocate::get_sbdrb()
     // Read the message size
     if (2 != port->readBytes(sbuf, 2)) 
         return WRONG_LENGTH;
-    size_t size =  (sbuf[0] << 8) | sbuf[1]; // highest order byte first
+    unsigned int size =  (sbuf[0] << 8) | sbuf[1]; // highest order byte first
     // Read the message
     memset(mt_message, 0, MAX_MSG_SIZE);
-    size_t actual = port->readBytes(mt_message, size);
+    unsigned int actual = port->readBytes(mt_message, size);
 #ifdef DEBUG_ENABLED
     Serial.print("        > get_SBDRB=");
-    for (size_t i = 0; i < size; i++)
+    for (unsigned int i = 0; i < size; i++)
         Serial.print(mt_message[i], HEX);
     Serial.println("\n        > return=" + String(*mt_message));
 #endif

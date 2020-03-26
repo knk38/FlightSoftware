@@ -53,8 +53,8 @@ class DownlinkProducer : public TimedControlTask<void> {
      * @param If true, this computes the maximum possible size of the snapshot.
      * If false, this computes the size while only considering active flows.
      */
-    size_t compute_downlink_size(const bool compute_max = false) const;
-    size_t compute_max_downlink_size() const;
+    unsigned int compute_downlink_size(const bool compute_max = false) const;
+    unsigned int compute_max_downlink_size() const;
 
     /**
      * @brief Produce flow packets as needed, and keep track of the next
@@ -91,7 +91,7 @@ class DownlinkProducer : public TimedControlTask<void> {
          */
         Flow(const StateFieldRegistry& r,
              const FlowData& flow_data,
-             const size_t num_flows);
+             const unsigned int num_flows);
 
         //! Flow ID #
         Serializer<unsigned char> id_sr;
@@ -103,7 +103,7 @@ class DownlinkProducer : public TimedControlTask<void> {
         std::vector<ReadableStateFieldBase*> field_list;
 
         //! Number of bits in the entire flow packet, including the flow ID.
-        size_t get_packet_size() const;
+        unsigned int get_packet_size() const;
 
         /**
         * @brief Move assignment operator.
@@ -111,7 +111,7 @@ class DownlinkProducer : public TimedControlTask<void> {
         Flow& operator=(Flow&& rhs) {
             is_active = std::move(rhs.is_active);
             id_sr = std::move(rhs.id_sr);
-            for (size_t i = 0; i<rhs.field_list.size(); i++) {
+            for (unsigned int i = 0; i<rhs.field_list.size(); i++) {
                 field_list[i] = rhs.field_list[i];
             }
             return *this;
@@ -162,7 +162,7 @@ class DownlinkProducer : public TimedControlTask<void> {
      */
     char* snapshot = nullptr;
     InternalStateField<char*> snapshot_ptr_f;
-    InternalStateField<size_t> snapshot_size_bytes_f;
+    InternalStateField<unsigned int> snapshot_size_bytes_f;
 
     /**
      * @brief Actual flow data.

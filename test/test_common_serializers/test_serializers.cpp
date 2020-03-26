@@ -15,7 +15,7 @@ constexpr static int number_of_vec_test = 100;
  * @brief Returns the magnitude of a vector
  * 
  */
-template <typename T, size_t N>
+template <typename T, unsigned int N>
 T magnitude_of(std::array<T, N>& src){
     lin::Vector<T, N> lin_vec;
 
@@ -31,12 +31,12 @@ T magnitude_of(std::array<T, N>& src){
  * @brief Normalizes a vector or quaternion
  * 
  */
-template <typename T, size_t N>
+template <typename T, unsigned int N>
 void normalize(std::array<T, N>& src) {
 
     T magnitude = magnitude_of(src);
     
-    for(size_t i = 0; i<N; i++){
+    for(unsigned int i = 0; i<N; i++){
         src[i] = src[i] / magnitude;
     }
 
@@ -47,7 +47,7 @@ void normalize(std::array<T, N>& src) {
  * @brief Returns the angle between two quaternions or vectors
  * 
  */
-template <typename T, size_t N>
+template <typename T, unsigned int N>
 T angle_between(std::array<T, N>& a, std::array<T, N>& b){
     lin::Vector<T, N> lin_a;
     lin::Vector<T, N> lin_b;
@@ -407,7 +407,7 @@ void test_float_or_double_serializer() {
     dl_deserializer.reset(new Serializer<T>(0, 3, 5));
 
     threshold = 3.0 / 31;
-    for (size_t i = 0; i < 100; i++) {
+    for (unsigned int i = 0; i < 100; i++) {
         T x = i * 3.0 / 100;
 
         test_value_float_or_double<T>(serializer, dl_deserializer,  x, x, threshold);
@@ -419,7 +419,7 @@ void test_float_or_double_serializer() {
     dl_deserializer.reset(new Serializer<T>(-1, 3, 6));
 
     threshold = 4.0 / 63;
-    for (size_t i = 0; i < 1000; i++) {
+    for (unsigned int i = 0; i < 1000; i++) {
         T x = -1.0 + i * 4.0 / 1000;
         test_value_float_or_double<T>(serializer, dl_deserializer,  x, x, threshold);
     }
@@ -428,7 +428,7 @@ void test_float_or_double_serializer() {
 
     // Test string-based deserialization
     T val;
-    for (size_t i = 0; i < 1000; i++) {
+    for (unsigned int i = 0; i < 1000; i++) {
         T x = -1.0 + i * 4.0 / 1000;
 
         char buf[100];
@@ -481,14 +481,14 @@ void test_vec_serializer() {
 
     // TODO write serialization initializations for edge cases.
     
-    const size_t vec_bitsize = 40;
+    const unsigned int vec_bitsize = 40;
 
     // (Deterministically) generate random vectors of magnitude 2, and see if they work 
     // with the serializer.
     // Criterion for functionality: vector is within 0.5 degrees, and within 0.1% of magnitude
 
     srand(2);
-    for(size_t i = 0; i < number_of_vec_test; i++) {
+    for(unsigned int i = 0; i < number_of_vec_test; i++) {
         auto vec_serializer = std::make_shared<Serializer<vector_t>>(0,2,vec_bitsize);
         
         //make the another serialier with same inputs
@@ -597,7 +597,7 @@ void test_quat_serializer() {
     // Criterion for functionality: the quaternion that's reported has a displacement from the
     // input quaternion of magnitude at most magnitude_err.
     srand(2);
-    for(size_t i = 0; i < number_of_vec_test; i++) {
+    for(unsigned int i = 0; i < number_of_vec_test; i++) {
         auto quat_serializer = std::make_shared<Serializer<quat_t>>();
         auto downlink_deserializer = std::make_shared<Serializer<quat_t>>();
 

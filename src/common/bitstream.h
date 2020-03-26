@@ -75,7 +75,7 @@ class bitstream{
  * @param res a pointer to mutable array that has size of at least (num_bits+7)/8
  * @return the number of bits read
  */
-  size_t nextN(size_t num_bits, uint8_t* res);
+  unsigned int nextN(unsigned int num_bits, uint8_t* res);
 
 /**
  * @brief Attempts to consume a specified number of bits from the current position
@@ -85,7 +85,7 @@ class bitstream{
  * @param bit_arr the bit array to store the consumed bits
  * @param return 0 if bit_arr is not big enough else the number of bits read
  */
-  size_t nextN(size_t num_bits, std::vector<bool>& bit_arr);
+  unsigned int nextN(unsigned int num_bits, std::vector<bool>& bit_arr);
 
 /**
  * @brief Same as nextN but does not consume the bits
@@ -93,7 +93,7 @@ class bitstream{
  * @param res a pointer to mutable array that has size of at least (num_bits+7)/8
  * @return the number of bits read
  */
-  size_t peekN(size_t num_bits, uint8_t* res);
+  unsigned int peekN(unsigned int num_bits, uint8_t* res);
 
 /**
  * @brief Same as nextN but does not consume the bits
@@ -101,7 +101,7 @@ class bitstream{
  * @param bit_arr the bit array to store the consumed bits
  * @return the number of bits read
  */
-  size_t peekN(size_t num_bits, std::vector<bool>& bit_arr);
+  unsigned int peekN(unsigned int num_bits, std::vector<bool>& bit_arr);
 
 /**
  * @brief Moves the position of the byte and bit pointer to a given offset
@@ -111,7 +111,7 @@ class bitstream{
  *  bs_end: direction towards the end
  * @return 0 if unable to fufill request, else returns amt
  */
-  size_t seekG(size_t amt, int dir);
+  unsigned int seekG(unsigned int amt, int dir);
 
 /**
  * @brief Write a number of bits from new_val to this bitstream
@@ -119,7 +119,7 @@ class bitstream{
  * @param num_bits The number of bits to write
  * @return the number of bits written
  */
-  size_t editN(size_t num_bits, uint8_t* new_val);
+  unsigned int editN(unsigned int num_bits, uint8_t* new_val);
 
 /**
  * @brief Write a number of bits from bs_other to this bitstream
@@ -127,7 +127,7 @@ class bitstream{
  * @param num_bits The number of bits to write
  * @return the number of bits written
  */
-  size_t editN(size_t num_bits, bitstream& bs_other);
+  unsigned int editN(unsigned int num_bits, bitstream& bs_other);
 
 /**
  * @brief sets the byte_offset and bit_offset to 0
@@ -143,7 +143,7 @@ class bitstream{
  * @param u8 a pointer to the unsigned int to write to
  * @return 0 if num_bits > 8, else the number of bits read
  */
-  size_t next(size_t num_bits, uint8_t* u8);
+  unsigned int next(unsigned int num_bits, uint8_t* u8);
 
 /**
  * @brief Writes a specified number of bits of the given unsigned byte to the
@@ -153,7 +153,7 @@ class bitstream{
  * @param num_bits the number of bits to write from u8
  * @return The number of bits written
  */
-  size_t edit(size_t num_bits, uint8_t* u8);
+  unsigned int edit(unsigned int num_bits, uint8_t* u8);
 
 };
 

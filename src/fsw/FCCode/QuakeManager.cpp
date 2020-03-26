@@ -54,7 +54,7 @@ QuakeManager::QuakeManager(StateFieldRegistry &registry, unsigned int offset) :
     #endif
 
     // Retrieve fields from registry
-    snapshot_size_fp = find_internal_field<size_t>("downlink.snap_size", __FILE__, __LINE__);
+    snapshot_size_fp = find_internal_field<unsigned int>("downlink.snap_size", __FILE__, __LINE__);
     radio_mo_packet_fp = find_internal_field<char*>("downlink.ptr", __FILE__, __LINE__);
 
     // Initialize Quake Manager variables
@@ -69,7 +69,7 @@ QuakeManager::QuakeManager(StateFieldRegistry &registry, unsigned int offset) :
     dump_telemetry_f.set(false);
 
     // Setup MO Buffers
-    max_snapshot_size = std::max(snapshot_size_fp->get() + 1, static_cast<size_t>(packet_size));
+    max_snapshot_size = std::max(snapshot_size_fp->get() + 1, static_cast<unsigned int>(packet_size));
     mo_buffer_copy = new char[max_snapshot_size];
 }
 
@@ -91,7 +91,7 @@ bool QuakeManager::execute() {
 
         #ifdef DESKTOP
             std::cout << "{\"t\":" << debug_console::_get_elapsed_time() << ",\"telem\":\"";
-            for(size_t i = 0; i < snapshot_size_fp->get(); i++) {
+            for(unsigned int i = 0; i < snapshot_size_fp->get(); i++) {
                 std::ostringstream out;
                 out << "\\\\x";
                 out << std::hex << std::setfill('0') << std::setw(2) << (0xFF & snapshot[i]);
@@ -100,7 +100,7 @@ bool QuakeManager::execute() {
             std::cout << "\"}\n";
         #else
             Serial.printf("{\"t\":%d,\"telem\":\"", debug_console::_get_elapsed_time());
-            for(size_t i = 0; i < snapshot_size_fp->get(); i++) {
+            for(unsigned int i = 0; i < snapshot_size_fp->get(); i++) {
                 Serial.print("\\\\x");
                 Serial.print((0xFF & snapshot[i]), HEX);
             }
@@ -288,7 +288,7 @@ bool QuakeManager::write_to_error(int err_code)
     return false;
 }
 
-bool QuakeManager::no_more_cycles(size_t max_cycles, radio_state_t new_state)
+bool QuakeManager::no_more_cycles(unsigned int max_cycles, radio_state_t new_state)
 {
     if (control_cycle_count - last_checkin_cycle_f.get() > max_cycles)
     {

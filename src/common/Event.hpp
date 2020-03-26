@@ -22,7 +22,7 @@ public:
   /**
      * @brief Get bitsize of contained bitset.
      */
-  virtual size_t bitsize() const = 0;
+  virtual unsigned int bitsize() const = 0;
 
   /**
      * @brief Get the contained bitset.
@@ -82,7 +82,7 @@ class Event : public ReadableStateFieldBase, public StateField<bool>, public Eve
   public:
     // Functions from the EventBase interface.
       void signal() override;
-      size_t bitsize() const override;
+      unsigned int bitsize() const override;
       const bit_array &get_bit_array() const override;
       void deserialize() override;
       void set_bit_array(const bit_array &arr) override;

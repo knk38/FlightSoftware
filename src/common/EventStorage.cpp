@@ -27,7 +27,7 @@ void EventStorage::add_events_to_registry(StateFieldRegistry &registry)
     }
 }
 
-size_t EventStorage::bitsize() const
+unsigned int EventStorage::bitsize() const
 {
     return sub_events[event_ptr].bitsize();
 }

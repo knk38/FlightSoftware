@@ -31,7 +31,7 @@ class SerializableStateFieldBase : virtual public StateFieldBase {
     virtual void deserialize() = 0;
     virtual bool deserialize(const char *val) = 0;
     virtual const char *print() const = 0;
-    virtual size_t bitsize() const = 0;
+    virtual unsigned int bitsize() const = 0;
     virtual const bit_array& get_bit_array() const = 0;
     virtual void set_bit_array(const bit_array& arr) = 0;
 };
@@ -59,7 +59,7 @@ class SerializableStateField : public StateField<T>, virtual public Serializable
     T get_serializer_min() const { return _serializer.min(); };
     T get_serializer_max() const { return _serializer.max(); };
 
-    size_t bitsize() const override { return _serializer.bitsize(); }
+    unsigned int bitsize() const override { return _serializer.bitsize(); }
     const bit_array& get_bit_array() const override { return _serializer.get_bit_array(); }
     void set_bit_array(const bit_array& arr) override { _serializer.set_bit_array(arr); }
 

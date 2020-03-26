@@ -13,7 +13,7 @@ struct TestFixture {
     std::shared_ptr<ReadableStateField<unsigned int>> foo1_fp;
     std::shared_ptr<ReadableStateField<unsigned int>> cycle_count_fp;
     InternalStateField<char*>* snapshot_ptr_fp;
-    InternalStateField<size_t>* snapshot_size_bytes_fp;
+    InternalStateField<unsigned int>* snapshot_size_bytes_fp;
     WritableStateField<unsigned char>* shift_flows_id1_fp;
     WritableStateField<unsigned char>* shift_flows_id2_fp;
     WritableStateField<unsigned char>* toggle_flow_id_fp;
@@ -33,7 +33,7 @@ struct TestFixture {
         downlink_producer = std::make_unique<DownlinkProducer>(registry, 0);
         downlink_producer->init_flows(flow_data);
         snapshot_ptr_fp = registry.find_internal_field_t<char*>("downlink.ptr");
-        snapshot_size_bytes_fp = registry.find_internal_field_t<size_t>(
+        snapshot_size_bytes_fp = registry.find_internal_field_t<unsigned int>(
                                     "downlink.snap_size");
         shift_flows_id1_fp = registry.find_writable_field_t<unsigned char>("downlink.shift_id1");
         shift_flows_id2_fp = registry.find_writable_field_t<unsigned char>("downlink.shift_id2");
@@ -373,7 +373,7 @@ void test_shift_priorities() {
     tf.init(flow_data);
     std::vector<DownlinkProducer::Flow> flows=tf.downlink_producer->get_flows();
     std::vector<int> initial_ids={1,2,3,4,5,6};
-    for (size_t i = 0; i<flows.size(); i++){
+    for (unsigned int i = 0; i<flows.size(); i++){
         unsigned char flow_id;
         flows[i].id_sr.deserialize(&flow_id);
         TEST_ASSERT_EQUAL(initial_ids[i], flow_id);
@@ -387,7 +387,7 @@ void test_shift_priorities() {
     // Get the new flow vector and check that the flows have been reordered as desired
     flows=tf.downlink_producer->get_flows();
     std::vector<int> desired_ids={6,1,2,3,4,5};
-    for (size_t i = 0; i<flows.size(); i++){
+    for (unsigned int i = 0; i<flows.size(); i++){
         unsigned char flow_id;
         flows[i].id_sr.deserialize(&flow_id);
         TEST_ASSERT_EQUAL(desired_ids[i], flow_id);
@@ -399,7 +399,7 @@ void test_shift_priorities() {
     // Get the new flow vector and check that the flows have been reordered as desired
     flows=tf.downlink_producer->get_flows();
     desired_ids={1,2,3,4,5,6};
-    for (size_t i = 0; i<flows.size(); i++){
+    for (unsigned int i = 0; i<flows.size(); i++){
         unsigned char flow_id;
         flows[i].id_sr.deserialize(&flow_id);
         TEST_ASSERT_EQUAL(desired_ids[i], flow_id);
@@ -440,7 +440,7 @@ void test_shift_statefield_cmd() {
     // Get the new flow vector and check that the flows have been reordered as desired
     flows=tf.downlink_producer->get_flows();
     std::vector<int> desired_ids={6,1,2,3,4,5};
-    for (size_t i = 0; i<flows.size(); i++){
+    for (unsigned int i = 0; i<flows.size(); i++){
         unsigned char flow_id;
         flows[i].id_sr.deserialize(&flow_id);
         TEST_ASSERT_EQUAL(desired_ids[i], flow_id);
@@ -458,7 +458,7 @@ void test_shift_statefield_cmd() {
     // Get the new flow vector and check that the flows have been reordered as desired
     flows=tf.downlink_producer->get_flows();
     desired_ids={1,2,3,4,5,6};
-    for (size_t i = 0; i<flows.size(); i++){
+    for (unsigned int i = 0; i<flows.size(); i++){
         unsigned char flow_id;
         flows[i].id_sr.deserialize(&flow_id);
         TEST_ASSERT_EQUAL(desired_ids[i], flow_id);

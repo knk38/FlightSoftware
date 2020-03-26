@@ -24,7 +24,7 @@ inline bool I2CDevice::i2c_pop_errors() {
 inline bool I2CDevice::i2c_peek_errors() const { return this->recent_errors; }
 
 template <typename T>
-void I2CDevice::i2c_transmit_data(T const *data, std::size_t len, i2c_stop s) {
+void I2CDevice::i2c_transmit_data(T const *data, std::unsigned int len, i2c_stop s) {
 #ifndef DESKTOP
     this->i2c_begin_transmission();
     this->i2c_write(data, len);
@@ -33,11 +33,11 @@ void I2CDevice::i2c_transmit_data(T const *data, std::size_t len, i2c_stop s) {
 }
 
 template <typename T>
-void I2CDevice::i2c_receive_data(T *data, std::size_t len, i2c_stop s) {
+void I2CDevice::i2c_receive_data(T *data, std::unsigned int len, i2c_stop s) {
 #ifndef DESKTOP
     this->i2c_request_from(len * sizeof(T), s);
     if (this->i2c_peek_errors()) return;
-    for (std::size_t i = 0; i < len * sizeof(T); i++) ((unsigned char *)data)[i] = this->i2c_read();
+    for (std::unsigned int i = 0; i < len * sizeof(T); i++) ((unsigned char *)data)[i] = this->i2c_read();
 #endif
 }
 
@@ -60,14 +60,14 @@ inline void I2CDevice::i2c_send_transmission(i2c_stop s) {
 #endif
 }
 
-inline void I2CDevice::i2c_request_from(std::size_t len, i2c_stop s) {
+inline void I2CDevice::i2c_request_from(std::unsigned int len, i2c_stop s) {
 #ifndef DESKTOP
     bool err = (this->wire.requestFrom(this->addr, len, s, this->timeout) == 0);
     this->recent_errors = (this->recent_errors || err);
 #endif
 }
 
-inline void I2CDevice::i2c_request_from_subaddr(unsigned char subaddr, std::size_t len) {
+inline void I2CDevice::i2c_request_from_subaddr(unsigned char subaddr, std::unsigned int len) {
 #ifndef DESKTOP
     i2c_begin_transmission();
     i2c_write(subaddr);
@@ -77,7 +77,7 @@ inline void I2CDevice::i2c_request_from_subaddr(unsigned char subaddr, std::size
 }
 
 inline void I2CDevice::i2c_read_from_subaddr(unsigned char subaddr, unsigned char *dest,
-                                             std::size_t len) {
+                                             std::unsigned int len) {
 #ifndef DESKTOP
     i2c_request_from_subaddr(subaddr, len);
     i2c_read(dest, len);
@@ -94,7 +94,7 @@ inline unsigned char I2CDevice::i2c_read_from_subaddr(unsigned char subaddr) {
 }
 
 inline void I2CDevice::i2c_write_to_subaddr(unsigned char subaddr, const unsigned char data[],
-                                            std::size_t len) {
+                                            std::unsigned int len) {
 #ifndef DESKTOP
     i2c_begin_transmission();
     i2c_write(subaddr);
@@ -110,7 +110,7 @@ inline void I2CDevice::i2c_write_to_subaddr(unsigned char subaddr, const unsigne
 #endif
 }
 
-inline void I2CDevice::i2c_send_request(std::size_t len, i2c_stop s) {
+inline void I2CDevice::i2c_send_request(std::unsigned int len, i2c_stop s) {
 #ifndef DESKTOP
     this->wire.sendRequest(this->addr, len, s);
 #endif
@@ -139,7 +139,7 @@ inline void I2CDevice::i2c_write(unsigned char data) {
 }
 
 template <typename T>
-inline void I2CDevice::i2c_write(T const *data, std::size_t len) {
+inline void I2CDevice::i2c_write(T const *data, std::unsigned int len) {
 #ifndef DESKTOP
     bool err = (this->wire.write((unsigned char *)data, len * sizeof(T)) == 0);
     this->recent_errors = (this->recent_errors || err);
@@ -167,7 +167,7 @@ inline unsigned char I2CDevice::i2c_read() {
 }
 
 template <typename T>
-inline void I2CDevice::i2c_read(T *data, std::size_t len) {
+inline void I2CDevice::i2c_read(T *data, std::unsigned int len) {
 #ifndef DESKTOP
     bool err = (this->wire.read((unsigned char *)data, len * sizeof(T)) != len * sizeof(T));
     this->recent_errors = (this->recent_errors || err);

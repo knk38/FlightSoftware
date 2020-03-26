@@ -20,7 +20,7 @@ class DownlinkParserMock : public DownlinkParser {
         return this->fcp.get_downlink_producer();
     }
 
-    json process_downlink(const char* packet, const size_t len) {
+    json process_downlink(const char* packet, const unsigned int len) {
         int len_cpy = len;
         while(len_cpy > 0) {
             std::vector<char> p(packet,
