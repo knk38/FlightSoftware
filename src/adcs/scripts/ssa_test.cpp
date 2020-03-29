@@ -34,5 +34,5 @@ void loop() {
   LOG_INFO_header
   LOG_INFO_println("total update time " + String(millis() - time))
   LOG_INFO_println()
-  delay(2000);
+  delay(10000);
 }

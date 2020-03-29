@@ -8,7 +8,7 @@ Devices::Piksi piksi("piksi", Serial2);
 void setup() {
     piksi.setup();
     Serial.begin(9600);
-    delay(2000);
+    delay(10000);
     Serial.println(piksi.is_functional());
 }
 

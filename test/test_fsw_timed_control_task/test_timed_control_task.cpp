@@ -165,7 +165,7 @@ int main() {
 }
 #else
 void setup() {
-    delay(2000);
+    delay(10000);
     Serial.begin(9600);
     Serial.println(warning);
     test_timed_control_task();

@@ -5,7 +5,7 @@
 Devices::DockingSystem docking_system;
 
 void setup() {
-    delay(2000);
+    delay(10000);
     Serial.begin(9600);
     docking_system.setup();
 

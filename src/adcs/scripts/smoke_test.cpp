@@ -21,6 +21,6 @@ void setup() {
 }
 
 void loop() {
-  delay(2000);
+  delay(10000);
   LOG_TRACE_printlnF("Still alive! :)")
 }
