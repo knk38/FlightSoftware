@@ -16,13 +16,13 @@ class SpinMotorsCase(SingleSatOnlyCase):
         self.ws("adcs_cmd.rwa_speed_cmd", [50,50,50])
         self.ws("dcdc.ADCSMotor_cmd", True)
 
-        time.sleep(5)
+        # time.sleep(5)
 
-        self.cycle()
+        # self.cycle()
 
-        time.sleep(5)
+        # time.sleep(5)
 
-        self.cycle()
+        # self.cycle()
 
     def run_case_singlesat(self):
         self.cycle_no = self.sim.flight_controller.read_state("pan.cycle_no")
