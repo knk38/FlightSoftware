@@ -2,7 +2,7 @@
 from .base import SingleSatOnlyCase
 import time
 
-class D(SingleSatOnlyCase):
+class E(SingleSatOnlyCase):
     def setup_case_singlesat(self):
         # self.sim.flight_controller.write_state("pan.state", 11) # Mission State = Manual
         # self.sim.flight_controller.write_state("adcs.state", 5) # ADCS State = Manual
@@ -10,9 +10,7 @@ class D(SingleSatOnlyCase):
         # self.sim.flight_controller.write_state("adcs_cmd.rwa_speed_cmd", "0, 0, 0") # 0 speed to begin with
         # self.sim.flight_controller.write_state("dcdc.ADCSMotor_cmd", "true")
 
-        # wheels spin 2
-
-        self.ws("cycle.auto", True)
+        # self.ws("cycle.auto", True)
 
         print(self.rs("gomspace.vbatt"))
 

@@ -10,6 +10,8 @@ class C(SingleSatOnlyCase):
         # self.sim.flight_controller.write_state("adcs_cmd.rwa_speed_cmd", "0, 0, 0") # 0 speed to begin with
         # self.sim.flight_controller.write_state("dcdc.ADCSMotor_cmd", "true")
 
+        # 2 wheels spin
+
         self.ws("cycle.auto", True)
 
         print(self.rs("gomspace.vbatt"))
