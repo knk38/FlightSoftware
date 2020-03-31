@@ -91,7 +91,7 @@ void MainControlLoop::execute() {
 
     piksi_control_task.execute_on_time();
     // gomspace_controller.execute_on_time();
-    // adcs_monitor.execute_on_time();
+    adcs_monitor.execute_on_time();
 
     #ifdef FUNCTIONAL_TEST
     debug_task.execute_on_time();
@@ -102,7 +102,7 @@ void MainControlLoop::execute() {
     dcdc_controller.execute_on_time(); // moved for adcs264
     attitude_computer.execute_on_time();
     adcs_commander.execute_on_time();
-    // adcs_box_controller.execute_on_time();
+    adcs_box_controller.execute_on_time();
     downlink_producer.execute_on_time();
     quake_manager.execute_on_time();
     docking_controller.execute_on_time();
