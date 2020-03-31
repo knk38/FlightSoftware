@@ -103,7 +103,7 @@ class Case(object):
         
         self.rwa_modes = FSWEnum([
             "RWA_DISABLED",
-            "RWA_SPEED_CTRL"soft_assert,
+            "RWA_SPEED_CTRL",
             "RWA_ACCEL_CTRL"
         ])
 
