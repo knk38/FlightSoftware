@@ -90,7 +90,7 @@ void MainControlLoop::execute() {
     clock_manager.execute();
 
     piksi_control_task.execute_on_time();
-    gomspace_controller.execute_on_time();
+    // gomspace_controller.execute_on_time();
     // adcs_monitor.execute_on_time();
 
     #ifdef FUNCTIONAL_TEST
