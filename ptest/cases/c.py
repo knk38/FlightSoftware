@@ -17,7 +17,7 @@ class C(SingleSatOnlyCase):
         self.ws("pan.state", self.mission_states.get_by_name("manual"))
         self.ws("adcs.state", self.adcs_states.get_by_name("point_manual"))
         self.ws("adcs_cmd.rwa_mode", self.rwa_modes.get_by_name("RWA_SPEED_CTRL"))
-        self.ws("adcs_cmd.rwa_speed_cmd", [50,50,50])
+        self.ws("adcs_cmd.rwa_speed_cmd", [10,10,10])
         self.ws("dcdc.ADCSMotor_cmd", True)
 
         # time.sleep(5)
