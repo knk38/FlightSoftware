@@ -111,7 +111,7 @@ class ADCSCheckoutCase(SingleSatOnlyCase):
             self.ws(f"adcs_cmd.havt_disable{x}", True)
 
         self.cycle()
-        time.sleep(1)
+        time.sleep(10)
 
         self.logger.put("Post disabling all devices:")
         self.print_havt_read()
@@ -122,8 +122,8 @@ class ADCSCheckoutCase(SingleSatOnlyCase):
         for x in range(self.havt_length):
             self.ws(f"adcs_cmd.havt_reset{x}", True)
         self.cycle()
-        time.sleep(1)
-        
+        time.sleep(10)
+        self.cycle()
         self.logger.put("Post resetting all devices:")
         self.print_havt_read()
         self.soft_assert((initial_up_devices == self.havt_read), 
