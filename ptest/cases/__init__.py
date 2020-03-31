@@ -5,4 +5,5 @@ from .dcdc_checkout_case import DCDCCheckoutCase
 from .spin_motors_case import SpinMotorsCase
 from .adcs_checkout_case import ADCSCheckoutCase
 from .a import A
+from .b import B
 from .ci_case import CICase
