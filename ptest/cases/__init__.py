@@ -9,4 +9,5 @@ from .b import B
 from .c import C
 from .d import D
 from .d2 import D2
+from .e import E
 from .ci_case import CICase
