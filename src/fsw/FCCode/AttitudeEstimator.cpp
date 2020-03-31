@@ -1,66 +1,76 @@
 #include "AttitudeEstimator.hpp"
-#include <gnc_constants.hpp>
 
-const gps_time_t AttitudeEstimator::pan_epoch(gnc::constant::init_gps_week_number,
-                                              gnc::constant::init_gps_time_of_week,
-                                              gnc::constant::init_gps_nanoseconds);
+#include <adcs/constants.hpp>
+
+#include <gnc/constants.hpp>
+#include <gnc/utilities.hpp>
+
+#include <lin/core.hpp>
+#include <lin/generators/constants.hpp>
 
 AttitudeEstimator::AttitudeEstimator(StateFieldRegistry &registry,
-    unsigned int offset) 
-    : TimedControlTask<void>(registry, "adcs_estimator", offset),
-    data(),
-    state(),
-    estimate(),
-    q_body_eci_f("attitude_estimator.q_body_eci", Serializer<lin::Vector4f>()),
-    w_body_f("attitude_estimator.w_body", Serializer<lin::Vector3f>(-55, 55, 32*3)),
-    h_body_f("attitude_estimator.h_body"),
-    adcs_paired_f("adcs.paired", Serializer<bool>())
+        unsigned int offset) :
+    TimedControlTask<void>(registry, "adcs_estimator", offset),
+    b_body_rd_fp(FIND_READABLE_FIELD(lin::Vector3f, adcs_monitor.mag_vec)),
+    s_body_rd_fp(FIND_READABLE_FIELD(lin::Vector3f, adcs_monitor.ssa_vec)),
+    w_body_rd_fp(FIND_READABLE_FIELD(lin::Vector3f, adcs_monitor.gyr_vec)),
+    pos_ecef_fp(FIND_READABLE_FIELD(lin::Vector3d, orbit_estimator.pos_ecef)),
+    pan_time_fp(nullptr),  // pan_time_fp(FIND_READABLE_FIELD(unsigned long, pan_time);
+    b_body_est_f("attitude_estimator.b_body", Serializer<lin::Vector3f>(
+            adcs::imu::min_rd_mag, adcs::imu::max_rd_mag, 16*3)),
+    s_body_est_f("attitude_estimator.s_body", Serializer<lin::Vector3f>(-1, 1, 16*3)),
+    q_body_eci_est_f("attitude_estimator.q_body_eci", Serializer<lin::Vector4f>()),
+    w_body_est_f("attitude_estimator.w_body", Serializer<lin::Vector3f>(-55, 55, 32*3)),
+    estimator_state(),
+    estimator_data(),
+    estimate()
     {
-        piksi_time_fp = find_readable_field<gps_time_t>("piksi.time", __FILE__, __LINE__),
-        pos_vec_ecef_fp = find_readable_field<d_vector_t>("piksi.pos", __FILE__, __LINE__),
-        ssa_vec_rd_fp = find_readable_field<lin::Vector3f>("adcs_monitor.ssa_vec", __FILE__, __LINE__),
-        mag_vec_fp = find_readable_field<f_vector_t>("adcs_monitor.mag_vec", __FILE__, __LINE__),
+    // Add out new statefields
+    add_readable_field(b_body_est_f);
+    add_readable_field(s_body_est_f);
+    add_readable_field(q_body_eci_est_f);
+    add_readable_field(w_body_est_f);
 
-        //Add outputs
-        add_readable_field(q_body_eci_f);
-        add_readable_field(w_body_f);
-        add_internal_field(h_body_f);
-        add_writable_field(adcs_paired_f);
-
-        // Initialize flags
-        adcs_paired_f.set(false);
-    }
-
-void AttitudeEstimator::execute(){
-    set_data();
-    gnc::estimate_attitude(state, data, estimate);
-    set_estimate();
+    // Default the outputs to NaNs
+    b_body_est_f.set(lin::nans<lin::Vector3f>());
+    s_body_est_f.set(lin::nans<lin::Vector3f>());
+    q_body_eci_est_f.set(lin::nans<lin::Vector4f>());
+    w_body_est_f.set(lin::nans<lin::Vector3f>());
 }
 
-void AttitudeEstimator::set_data(){
-    data.t = ((unsigned long)(piksi_time_fp->get() - pan_epoch)) / 1.0e9;
+void AttitudeEstimator::execute() {
 
-    const d_vector_t r_ecef = pos_vec_ecef_fp->get();
-    data.r_ecef = {r_ecef[0], r_ecef[1], r_ecef[2]};
+    // Default all estimates to NaN
+    b_body_est_f.set(lin::nans<lin::Vector3f>());
+    s_body_est_f.set(lin::nans<lin::Vector3f>());
+    q_body_eci_est_f.set(lin::nans<lin::Vector4f>());
+    w_body_est_f.set(lin::nans<lin::Vector3f>());
+    
+    // Populate the attitude estimator's data struct
+    estimator_data = gnc::AttitudeEstimatorData();
+    estimator_data.t = ((double) pan_time_fp->get()) * 1.0e-9;
+    estimator_data.r_ecef = pos_ecef_fp->get();
+    estimator_data.b_body = b_body_rd_fp->get();
+    estimator_data.s_body = s_body_rd_fp->get();
+    estimator_data.w_body = w_body_rd_fp->get();
 
-    const f_vector_t mag_vec = mag_vec_fp->get();
-    data.b_body = {mag_vec[0], mag_vec[1], mag_vec[2]};
+    // Call the estimator
+    gnc::estimate_attitude(estimator_state, estimator_data, estimate);
 
-    data.s_body = ssa_vec_rd_fp->get();
-}
+    // Extract the estimated attitude and angular rate
+    q_body_eci_est_f.set(estimate.q_body_eci);
+    w_body_est_f.set(estimate.w_body);
 
-void AttitudeEstimator::set_estimate(){
-    q_body_eci_f.set({
-        estimate.q_body_eci(0),
-        estimate.q_body_eci(1),
-        estimate.q_body_eci(2),
-        estimate.q_body_eci(3)
-    });
+    // Continue to estimate the rest of our parameters if the estimator was
+    // successful
 
-    w_body_f.set(estimate.w_body);
+    // TODO : Complete this
 
-    lin::Vector3f result;
-    if (adcs_paired_f.get()) result = gnc::constant::JB_docked_sats * estimate.w_body;
-    else result = gnc::constant::JB_single_sat * estimate.w_body;
-    h_body_f.set(result.eval());
+    b_body_est_f.set(b_body_rd_fp->get());
+    s_body_est_f.set(s_body_rd_fp->get());
+
+    // if (!std::isnan(q_body_eci_est_f.get()(0))) {
+    //     lin::Vector4f q_eci_body;
+    //     gnc::utl::quat_conj(estimate.q_body_eci, q_eci_body);
+    // }
 }
