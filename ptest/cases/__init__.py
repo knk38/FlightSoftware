@@ -7,4 +7,5 @@ from .adcs_checkout_case import ADCSCheckoutCase
 from .a import A
 from .b import B
 from .c import C
+from .d import D
 from .ci_case import CICase
