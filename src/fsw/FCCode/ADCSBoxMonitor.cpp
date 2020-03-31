@@ -138,7 +138,7 @@ void ADCSBoxMonitor::execute(){
     
 
     adcs_system.get_rwa(&rwa_speed_rd,&rwa_torque_rd);
-    adcs_system.get_ssa_voltage(&ssa_voltages);
+    // adcs_system.get_ssa_voltage(&ssa_voltages);
     adcs_system.get_imu(&mag_vec, &gyr_vec, &gyr_temp);
 
     //only update the ssa_vector if and only if the mode was COMPLETE

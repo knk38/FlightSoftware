@@ -91,7 +91,7 @@ void MainControlLoop::execute() {
 
     piksi_control_task.execute_on_time();
     gomspace_controller.execute_on_time();
-    // adcs_monitor.execute_on_time();
+    adcs_monitor.execute_on_time();
 
     #ifdef FUNCTIONAL_TEST
     debug_task.execute_on_time();
