@@ -145,16 +145,15 @@ void ADCSBoxMonitor::execute(){
     adcs_system.get_ssa_mode(&ssa_mode);
     if(ssa_mode == adcs::SSAMode::SSA_COMPLETE){
         adcs_system.get_ssa_vector(&ssa_vec);
-        lin::Vector3f ssa_vec_temp({ssa_vec[0], ssa_vec[1], ssa_vec[2]});
-        ssa_vec_f.set(ssa_vec_temp);
+        ssa_vec_f.set({ssa_vec[0], ssa_vec[1], ssa_vec[2]});
     }
     else{
-        ssa_vec_f.set({nan,nan,nan});
+        ssa_vec_f.set(lin::nans<lin::Vector3f>());
     }
     
     //set statefields from internal containers
-    rwa_speed_rd_f.set(rwa_speed_rd);
-    rwa_torque_rd_f.set(rwa_torque_rd);
+    rwa_speed_rd_f.set({rwa_speed_rd[0], rwa_speed_rd[1], rwa_speed_rd[2]});
+    rwa_torque_rd_f.set({rwa_torque_rd[0], rwa_torque_rd[1], rwa_torque_rd[2]});
     ssa_mode_f.set(ssa_mode);
 
     for(unsigned int i = 0; i<adcs::ssa::num_sun_sensors; i++){
@@ -181,8 +180,8 @@ void ADCSBoxMonitor::execute(){
     if(havt_read_vector[adcs::havt::Index::RWA_POT].get() == false) wheel_pot_fault.signal();
     else wheel_pot_fault.unsignal();
 
-    mag_vec_f.set(mag_vec);
-    gyr_vec_f.set(gyr_vec);
+    mag_vec_f.set({mag_vec[0], mag_vec[1], mag_vec[2]});
+    gyr_vec_f.set({gyr_vec[0], gyr_vec[1], gyr_vec[2]});
     gyr_temp_f.set(gyr_temp);
 
     //flags default to false, meaning there are no issues
