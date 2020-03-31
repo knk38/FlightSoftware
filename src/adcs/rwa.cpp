@@ -159,8 +159,9 @@ void update_sensors(float speed_flt, float ramp_flt) {
   ramp_rd = ramp_rd + speed_flt * (readings - ramp_rd);
 
   LOG_TRACE_header
-  LOG_TRACE_println("Updated ramp reading " + String(readings(0)) + " "
-      + String(readings(1)) + " " + String(readings(2)))
+  // LOG_TRACE_println("Updated ramp reading " + String(readings(0)) + " "
+  //     + String(readings(1)) + " " + String(readings(2)))
+  LOG_SERIAL.printf("Updated ramp reading %f %f %f\n", readings(0), readings(1), readings(2));
 
   LOG_TRACE_header
   LOG_TRACE_println("Updated, filtered ramp reading "

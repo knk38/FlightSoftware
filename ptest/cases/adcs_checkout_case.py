@@ -1,6 +1,7 @@
 # ADCSCheckoutCase. Verifies the functionality of the ADCS.
 from .base import SingleSatOnlyCase, TestCaseFailure
 import math
+import time
 
 def mag_of(vals):
     '''
@@ -69,6 +70,7 @@ class ADCSCheckoutCase(SingleSatOnlyCase):
 
         # adcs_controller should have applied commands.
         self.cycle()
+        time.sleep(1)
 
         self.print_havt_read()
 
