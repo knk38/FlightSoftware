@@ -26,6 +26,15 @@ class E(SingleSatOnlyCase):
         self.ws("adcs_cmd.rwa_speed_cmd", [10,10,10])
         self.ws("dcdc.ADCSMotor_cmd", True)
 
+        self.cycle()
+        self.rs("pan.cycle_no")
+        time.sleep(5)
+        self.cycle()
+        self.rs("pan.cycle_no")
+        time.sleep(5)
+        self.cycle()
+        self.rs("pan.cycle_no")
+
         print(self.rs("gomspace.vbatt"))
         print(self.rs("pan.cycle_no"))
 
