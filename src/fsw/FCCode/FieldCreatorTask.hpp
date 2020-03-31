@@ -14,8 +14,8 @@
 // eventually become zero.
 class FieldCreatorTask : public ControlTask<void> {
     public:
-      ReadableStateField<d_vector_t> pos_f;
-      ReadableStateField<d_vector_t> pos_baseline_f;
+      ReadableStateField<lin::Vector3d> pos_f;
+      ReadableStateField<lin::Vector3d> pos_baseline_f;
 
       Fault failed_pressurize_f;
       Fault overpressured_f;
