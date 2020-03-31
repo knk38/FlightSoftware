@@ -10,9 +10,9 @@ class C(SingleSatOnlyCase):
         # self.sim.flight_controller.write_state("adcs_cmd.rwa_speed_cmd", "0, 0, 0") # 0 speed to begin with
         # self.sim.flight_controller.write_state("dcdc.ADCSMotor_cmd", "true")
 
-        self.ws("adcs_cmd.havt_reset7")
-        self.ws("adcs_cmd.havt_reset8")
-        self.ws("adcs_cmd.havt_reset9")
+        self.ws("adcs_cmd.havt_reset7", True)
+        self.ws("adcs_cmd.havt_reset8", True)
+        self.ws("adcs_cmd.havt_reset9", True)
 
         self.ws("pan.state", self.mission_states.get_by_name("manual"))
         self.ws("adcs.state", self.adcs_states.get_by_name("point_manual"))
