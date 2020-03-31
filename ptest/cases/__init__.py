@@ -10,4 +10,5 @@ from .c import C
 from .d import D
 from .f import F
 from .d2 import D2
+from .e import E
 from .ci_case import CICase
