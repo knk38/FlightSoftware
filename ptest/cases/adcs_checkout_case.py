@@ -92,7 +92,7 @@ class ADCSCheckoutCase(SingleSatOnlyCase):
         minimal_hitl   = "111111011100" + "000000"
             
         # I forgot what it actually is, will update on next PR, after testing with EDU SAT
-        edu_sat        = "110111011100" + "000000"
+        edu_sat        = "110111111111" + "101111"
 
         test_beds = {fc_only_hitl:"FC ONLY HITL",barebones_hitl:"BAREBONES HITL", minimal_hitl:"MINIMAL HITL", edu_sat:"EDU SAT"}
 
